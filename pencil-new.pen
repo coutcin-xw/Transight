@@ -419,6 +419,8 @@
                         2,
                         8
                       ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
                       "children": [
                         {
                           "type": "text",
@@ -1009,7 +1011,7 @@
                       "id": "sjoKR",
                       "name": "Text",
                       "fill": "#4B5563",
-                      "content": "插件设置",
+                      "content": "服务设置",
                       "fontFamily": "Inter",
                       "fontSize": 14,
                       "fontWeight": "normal"
@@ -1060,7 +1062,7 @@
               "id": "fFngG",
               "name": "Right Content",
               "width": "fill_container",
-              "height": 450,
+              "height": 480,
               "layout": "vertical",
               "gap": 24,
               "padding": 32,
@@ -1099,7 +1101,7 @@
                   "id": "5Rliy",
                   "name": "Settings Content",
                   "width": "fill_container",
-                  "height": "fill_container",
+                  "height": 380,
                   "layout": "vertical",
                   "gap": 24,
                   "children": [
@@ -1544,7 +1546,7 @@
       "id": "59B7V",
       "x": 786,
       "y": -63,
-      "name": "Settings Window--Plugin",
+      "name": "Settings Window--Service",
       "width": 700,
       "height": 544,
       "fill": "#FFFFFF",
@@ -1836,7 +1838,7 @@
                       "id": "sYtmG",
                       "name": "Text",
                       "fill": "#4B5563",
-                      "content": "插件设置",
+                      "content": "服务设置",
                       "fontFamily": "Inter",
                       "fontSize": 14,
                       "fontWeight": "normal"
@@ -1887,72 +1889,144 @@
               "id": "W4FAO",
               "name": "Right Content",
               "width": "fill_container",
-              "height": 450,
+              "height": 480,
               "layout": "vertical",
               "gap": 24,
               "padding": 32,
               "children": [
                 {
                   "type": "frame",
-                  "id": "smgNC",
-                  "name": "Plugin Settings Content",
+                  "id": "CCKMN",
+                  "name": "Service Header",
                   "width": "fill_container",
-                  "height": "fill_container",
+                  "gap": 12,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "cornerRadius": 8,
+                      "id": "ByS5g",
+                      "name": "Header Icon",
+                      "fill": "#DBEAFE",
+                      "width": 32,
+                      "height": 32
+                    },
+                    {
+                      "type": "text",
+                      "id": "Uxqw7",
+                      "name": "Content Title",
+                      "fill": "#1F2937",
+                      "content": "服务设置",
+                      "fontFamily": "Inter",
+                      "fontSize": 20,
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "smgNC",
+                  "name": "Service Settings Content",
+                  "width": "fill_container",
+                  "height": 380,
                   "layout": "vertical",
                   "gap": 20,
                   "children": [
                     {
                       "type": "frame",
-                      "id": "CCKMN",
-                      "name": "Plugin Header",
+                      "id": "X1RrO",
+                      "name": "Plugin Section",
                       "width": "fill_container",
+                      "layout": "vertical",
                       "gap": 12,
-                      "alignItems": "center",
                       "children": [
                         {
-                          "type": "rectangle",
-                          "cornerRadius": 8,
-                          "id": "ByS5g",
-                          "name": "Header Icon",
-                          "fill": "#DBEAFE",
-                          "width": 32,
-                          "height": 32
-                        },
-                        {
-                          "type": "text",
-                          "id": "Uxqw7",
-                          "name": "Content Title",
-                          "fill": "#1F2937",
-                          "content": "插件设置",
-                          "fontFamily": "Inter",
-                          "fontSize": 20,
-                          "fontWeight": "600"
+                          "type": "frame",
+                          "id": "w6Ruw",
+                          "name": "Store Section",
+                          "width": "fill_container",
+                          "gap": 12,
+                          "justifyContent": "space_between",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "xTkoX",
+                              "name": "Section Title",
+                              "fill": "#374151",
+                              "content": "插件管理",
+                              "fontFamily": "Inter",
+                              "fontSize": 16,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "ZikBI",
+                              "name": "Store Description",
+                              "fill": "#6B7280",
+                              "content": "浏览和管理服务插件列表",
+                              "fontFamily": "Inter",
+                              "fontSize": 13,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "frame",
+                              "id": "xxR8d",
+                              "name": "Button Container",
+                              "width": 98,
+                              "gap": 12,
+                              "children": [
+                                {
+                                  "type": "frame",
+                                  "id": "U0k7Z",
+                                  "name": "Add Internal Plugin Button",
+                                  "fill": "#3B82F6",
+                                  "cornerRadius": 6,
+                                  "gap": 8,
+                                  "padding": [
+                                    10,
+                                    20
+                                  ],
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "2PFJB",
+                                      "fill": "#FFFFFF",
+                                      "content": "插件管理",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 14,
+                                      "fontWeight": "500"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ]
                     },
                     {
                       "type": "frame",
-                      "id": "X1RrO",
-                      "name": "Installed Section",
-                      "width": "fill_container",
+                      "id": "6kXa5",
+                      "name": "Service Section",
+                      "fill": "#ffffff",
                       "layout": "vertical",
-                      "gap": 12,
+                      "gap": 16,
                       "children": [
                         {
                           "type": "text",
                           "id": "faCIE",
                           "name": "Section Title",
                           "fill": "#374151",
-                          "content": "已安装插件",
+                          "content": "服务管理",
                           "fontFamily": "Inter",
                           "fontSize": 16,
                           "fontWeight": "600"
                         },
                         {
                           "type": "frame",
-                          "id": "S1Tho",
-                          "name": "Google Plugin Card",
-                          "reusable": true,
+                          "id": "jk659",
+                          "name": "DeepL Plugin Card",
                           "width": "fill_container",
                           "fill": "#F9FAFB",
                           "cornerRadius": 8,
@@ -1967,7 +2041,7 @@
                           "children": [
                             {
                               "type": "frame",
-                              "id": "OgUfL",
+                              "id": "yGs1x",
                               "name": "Plugin Info",
                               "width": "fill_container",
                               "layout": "vertical",
@@ -1975,7 +2049,7 @@
                               "children": [
                                 {
                                   "type": "frame",
-                                  "id": "MlUm1",
+                                  "id": "dajqo",
                                   "name": "Plugin Header",
                                   "width": "fill_container",
                                   "gap": 8,
@@ -1984,18 +2058,18 @@
                                     {
                                       "type": "rectangle",
                                       "cornerRadius": 8,
-                                      "id": "gnz1E",
+                                      "id": "C36q5",
                                       "name": "Icon",
-                                      "fill": "#4285F4",
+                                      "fill": "#0F2C4F",
                                       "width": 36,
                                       "height": 36
                                     },
                                     {
                                       "type": "text",
-                                      "id": "gmK5B",
+                                      "id": "B8jfj",
                                       "name": "Name",
                                       "fill": "#1F2937",
-                                      "content": "Google 翻译",
+                                      "content": "DeepL 翻译",
                                       "fontFamily": "Inter",
                                       "fontSize": 15,
                                       "fontWeight": "600"
@@ -2004,10 +2078,10 @@
                                 },
                                 {
                                   "type": "text",
-                                  "id": "17jdY",
+                                  "id": "qUQEp",
                                   "name": "Description",
                                   "fill": "#6B7280",
-                                  "content": "使用 Google Translate API 进行翻译",
+                                  "content": "使用 DeepL AI 翻译引擎，翻译质量更高",
                                   "fontFamily": "Inter",
                                   "fontSize": 13,
                                   "fontWeight": "normal"
@@ -2016,15 +2090,16 @@
                             },
                             {
                               "type": "frame",
-                              "id": "iOKDD",
+                              "id": "vQder",
                               "name": "Plugin Actions",
                               "layout": "vertical",
                               "gap": 8,
-                              "alignItems": "end",
+                              "justifyContent": "center",
+                              "alignItems": "center",
                               "children": [
                                 {
                                   "type": "frame",
-                                  "id": "CJWgL",
+                                  "id": "1G5uJ",
                                   "name": "Toggle",
                                   "width": 44,
                                   "height": 24,
@@ -2035,7 +2110,7 @@
                                     {
                                       "type": "rectangle",
                                       "cornerRadius": 10,
-                                      "id": "xodVL",
+                                      "id": "yDPj0",
                                       "name": "Knob",
                                       "fill": "#FFFFFF",
                                       "width": 20,
@@ -2045,7 +2120,7 @@
                                 },
                                 {
                                   "type": "frame",
-                                  "id": "v2As0",
+                                  "id": "0XtZd",
                                   "name": "Config Button",
                                   "fill": "#F3F4F6",
                                   "cornerRadius": 6,
@@ -2061,7 +2136,7 @@
                                   "children": [
                                     {
                                       "type": "text",
-                                      "id": "ZFRvx",
+                                      "id": "xBkTk",
                                       "name": "Config Text",
                                       "fill": "#4B5563",
                                       "content": "配置",
@@ -2079,7 +2154,6 @@
                           "type": "frame",
                           "id": "Tmzih",
                           "name": "Baidu Plugin Card",
-                          "reusable": true,
                           "opacity": 0.6,
                           "width": "fill_container",
                           "fill": "#F9FAFB",
@@ -2330,8 +2404,8 @@
                         },
                         {
                           "type": "frame",
-                          "id": "jk659",
-                          "name": "DeepL Plugin Card",
+                          "id": "S1Tho",
+                          "name": "Google Plugin Card",
                           "width": "fill_container",
                           "fill": "#F9FAFB",
                           "cornerRadius": 8,
@@ -2346,7 +2420,7 @@
                           "children": [
                             {
                               "type": "frame",
-                              "id": "yGs1x",
+                              "id": "OgUfL",
                               "name": "Plugin Info",
                               "width": "fill_container",
                               "layout": "vertical",
@@ -2354,7 +2428,7 @@
                               "children": [
                                 {
                                   "type": "frame",
-                                  "id": "dajqo",
+                                  "id": "MlUm1",
                                   "name": "Plugin Header",
                                   "width": "fill_container",
                                   "gap": 8,
@@ -2363,18 +2437,18 @@
                                     {
                                       "type": "rectangle",
                                       "cornerRadius": 8,
-                                      "id": "C36q5",
+                                      "id": "gnz1E",
                                       "name": "Icon",
-                                      "fill": "#0F2C4F",
+                                      "fill": "#4285F4",
                                       "width": 36,
                                       "height": 36
                                     },
                                     {
                                       "type": "text",
-                                      "id": "B8jfj",
+                                      "id": "gmK5B",
                                       "name": "Name",
                                       "fill": "#1F2937",
-                                      "content": "DeepL 翻译",
+                                      "content": "Google 翻译",
                                       "fontFamily": "Inter",
                                       "fontSize": 15,
                                       "fontWeight": "600"
@@ -2383,10 +2457,10 @@
                                 },
                                 {
                                   "type": "text",
-                                  "id": "qUQEp",
+                                  "id": "17jdY",
                                   "name": "Description",
                                   "fill": "#6B7280",
-                                  "content": "使用 DeepL AI 翻译引擎，翻译质量更高",
+                                  "content": "使用 Google Translate API 进行翻译",
                                   "fontFamily": "Inter",
                                   "fontSize": 13,
                                   "fontWeight": "normal"
@@ -2395,16 +2469,15 @@
                             },
                             {
                               "type": "frame",
-                              "id": "vQder",
+                              "id": "iOKDD",
                               "name": "Plugin Actions",
                               "layout": "vertical",
                               "gap": 8,
-                              "justifyContent": "center",
-                              "alignItems": "center",
+                              "alignItems": "end",
                               "children": [
                                 {
                                   "type": "frame",
-                                  "id": "1G5uJ",
+                                  "id": "CJWgL",
                                   "name": "Toggle",
                                   "width": 44,
                                   "height": 24,
@@ -2415,7 +2488,7 @@
                                     {
                                       "type": "rectangle",
                                       "cornerRadius": 10,
-                                      "id": "yDPj0",
+                                      "id": "xodVL",
                                       "name": "Knob",
                                       "fill": "#FFFFFF",
                                       "width": 20,
@@ -2425,7 +2498,7 @@
                                 },
                                 {
                                   "type": "frame",
-                                  "id": "0XtZd",
+                                  "id": "v2As0",
                                   "name": "Config Button",
                                   "fill": "#F3F4F6",
                                   "cornerRadius": 6,
@@ -2441,7 +2514,7 @@
                                   "children": [
                                     {
                                       "type": "text",
-                                      "id": "xBkTk",
+                                      "id": "ZFRvx",
                                       "name": "Config Text",
                                       "fill": "#4B5563",
                                       "content": "配置",
@@ -2456,95 +2529,1079 @@
                           ]
                         }
                       ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "NEdYi",
+      "x": 677,
+      "y": 854,
+      "name": "Plugin List Window",
+      "width": 600,
+      "height": 480,
+      "fill": "#FFFFFF",
+      "cornerRadius": 12,
+      "stroke": {
+        "thickness": 1,
+        "fill": "#E5E7EB"
+      },
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "u4k0h",
+          "name": "Title Bar",
+          "width": "fill_container",
+          "height": 44,
+          "fill": "#F9FAFB",
+          "cornerRadius": [
+            12,
+            12,
+            0,
+            0
+          ],
+          "stroke": {
+            "thickness": 0,
+            "fill": "#E5E7EB"
+          },
+          "gap": 12,
+          "padding": [
+            0,
+            16
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "o78yy",
+              "name": "Title Left",
+              "width": "fill_container",
+              "gap": 10,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "rectangle",
+                  "cornerRadius": 5,
+                  "id": "vnNgK",
+                  "name": "Icon",
+                  "fill": "#3B82F6",
+                  "width": 20,
+                  "height": 20
+                },
+                {
+                  "type": "text",
+                  "id": "okI9F",
+                  "name": "title_text",
+                  "fill": "#1F2937",
+                  "content": "添加插件",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "rvVl9",
+              "name": "Close Button",
+              "width": 24,
+              "height": 24,
+              "fill": "#FEE2E2",
+              "cornerRadius": 4,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "FB2oA",
+                  "name": "closeIcon",
+                  "width": 14,
+                  "height": 14,
+                  "iconFontName": "x",
+                  "iconFontFamily": "lucide",
+                  "fill": "$font"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "w2YIM",
+              "name": "Window Controls",
+              "width": "fit_content(0)",
+              "height": "fit_content(0)",
+              "gap": 8
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "SJjd2",
+          "name": "Main Content",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 16,
+          "padding": 24,
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "96K7l",
+              "name": "Search Container",
+              "width": "fill_container",
+              "gap": 8,
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "KvZj0",
+                  "name": "search_label",
+                  "fill": "#374151",
+                  "content": "搜索插件",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "frame",
+                  "id": "fJnYB",
+                  "name": "Search Box",
+                  "width": "fill_container",
+                  "height": 40,
+                  "fill": "#F9FAFB",
+                  "cornerRadius": 8,
+                  "stroke": {
+                    "thickness": 1,
+                    "fill": "#E5E7EB"
+                  },
+                  "gap": 8,
+                  "padding": [
+                    0,
+                    12
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "n9Ls4",
+                      "name": "settingsIcon",
+                      "width": 14,
+                      "height": 14,
+                      "iconFontName": "search",
+                      "iconFontFamily": "feather",
+                      "fill": "$font"
                     },
                     {
+                      "type": "text",
+                      "id": "vAHax",
+                      "name": "search_placeholder",
+                      "rotation": -359.2258099033393,
+                      "fill": "#9CA3AF",
+                      "content": "输入插件名称搜索...",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "0tWQl",
+                  "name": "Install Button",
+                  "fill": "#10B981",
+                  "cornerRadius": 6,
+                  "gap": 6,
+                  "padding": [
+                    8,
+                    20
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "wl2XD",
+                      "name": "install_text1",
+                      "fill": "#FFFFFF",
+                      "content": "添加外部插件",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "g85Lg",
+              "name": "Plugin List Container",
+              "width": "fill_container",
+              "height": 273,
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "nEtYq",
+                  "name": "Plugin Item 1",
+                  "width": "fill_container",
+                  "fill": "#F9FAFB",
+                  "cornerRadius": 8,
+                  "stroke": {
+                    "thickness": 1,
+                    "fill": "#E5E7EB"
+                  },
+                  "gap": 12,
+                  "padding": 16,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
                       "type": "frame",
-                      "id": "w6Ruw",
-                      "name": "Store Section",
+                      "id": "psmCK",
+                      "name": "Plugin Header",
                       "width": "fill_container",
-                      "layout": "vertical",
+                      "height": 36,
                       "gap": 12,
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
                       "children": [
                         {
-                          "type": "text",
-                          "id": "xTkoX",
-                          "name": "Section Title",
-                          "fill": "#374151",
-                          "content": "插件管理",
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "600"
-                        },
-                        {
-                          "type": "text",
-                          "id": "ZikBI",
-                          "name": "Store Description",
-                          "fill": "#6B7280",
-                          "content": "浏览和安装更多翻译插件，或导入第三方插件",
-                          "fontFamily": "Inter",
-                          "fontSize": 13,
-                          "fontWeight": "normal"
-                        },
-                        {
                           "type": "frame",
-                          "id": "xxR8d",
-                          "name": "Button Container",
-                          "width": "fill_container",
-                          "gap": 12,
+                          "id": "LADon",
+                          "name": "Plugin Info",
+                          "width": 387,
+                          "justifyContent": "space_between",
+                          "alignItems": "center",
                           "children": [
                             {
                               "type": "frame",
-                              "id": "U0k7Z",
-                              "name": "Add Internal Plugin Button",
-                              "fill": "#3B82F6",
-                              "cornerRadius": 6,
+                              "id": "m2c7d",
+                              "name": "Plugin Name",
                               "gap": 8,
-                              "padding": [
-                                10,
-                                20
-                              ],
                               "children": [
                                 {
                                   "type": "text",
-                                  "id": "2PFJB",
-                                  "fill": "#FFFFFF",
-                                  "content": "添加内部插件",
+                                  "id": "vejSR",
+                                  "name": "plugin_name1",
+                                  "fill": "#1F2937",
+                                  "content": "Google 翻译",
                                   "fontFamily": "Inter",
-                                  "fontSize": 14,
-                                  "fontWeight": "500"
+                                  "fontSize": 15,
+                                  "fontWeight": "600"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "sJaNw",
+                                  "name": "plugin_desc1",
+                                  "fill": "#6B7280",
+                                  "content": "免费使用，支持100+语言",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
                                 }
                               ]
                             },
                             {
                               "type": "frame",
-                              "id": "dnnTX",
-                              "name": "Add External Plugin Button",
-                              "fill": "#FFFFFF",
-                              "cornerRadius": 6,
-                              "stroke": {
-                                "thickness": 1,
-                                "fill": "#3B82F6"
-                              },
-                              "gap": 8,
+                              "id": "frWTo",
+                              "name": "Internal Badge",
+                              "fill": "#D1FAE5",
+                              "cornerRadius": 10,
                               "padding": [
-                                10,
-                                20
+                                2,
+                                8
                               ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
                               "children": [
                                 {
                                   "type": "text",
-                                  "id": "8XboU",
-                                  "fill": "#3B82F6",
-                                  "content": "添加外部插件",
+                                  "id": "aInWI",
+                                  "name": "Badge Text",
+                                  "fill": "#065F46",
+                                  "content": "内部",
                                   "fontFamily": "Inter",
-                                  "fontSize": 14,
+                                  "fontSize": 10,
                                   "fontWeight": "500"
                                 }
                               ]
                             }
                           ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "Magzd",
+                          "name": "Install Button",
+                          "fill": "#10B981",
+                          "cornerRadius": 6,
+                          "gap": 6,
+                          "padding": [
+                            8,
+                            20
+                          ],
+                          "justifyContent": "space_between",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "SAbK1",
+                              "name": "install_text1",
+                              "fill": "#FFFFFF",
+                              "content": "添加",
+                              "fontFamily": "Inter",
+                              "fontSize": 14,
+                              "fontWeight": "500"
+                            }
+                          ]
                         }
                       ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "EAkhK",
+                  "name": "Plugin Item 2",
+                  "width": "fill_container",
+                  "fill": "#F9FAFB",
+                  "cornerRadius": 8,
+                  "stroke": {
+                    "thickness": 1,
+                    "fill": "#E5E7EB"
+                  },
+                  "gap": 12,
+                  "padding": 16,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "t5P7M",
+                      "name": "Plugin Header",
+                      "width": "fill_container",
+                      "height": 36,
+                      "gap": 12,
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "L1RCA",
+                          "name": "Plugin Info 2",
+                          "width": 387,
+                          "justifyContent": "space_between",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "vCnYF",
+                              "name": "Plugin Name 2",
+                              "gap": 8,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "9un4g",
+                                  "name": "plugin_name2",
+                                  "fill": "#1F2937",
+                                  "content": "DeepL 翻译",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 15,
+                                  "fontWeight": "600"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "C1ZPi",
+                                  "name": "plugin_desc2",
+                                  "fill": "#6B7280",
+                                  "content": "高质量翻译，支持欧洲语言",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "Z4ayC",
+                              "name": "Internal Badge",
+                              "fill": "#D1FAE5",
+                              "cornerRadius": 10,
+                              "padding": [
+                                2,
+                                8
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "Xfim6",
+                                  "name": "Badge Text",
+                                  "fill": "#065F46",
+                                  "content": "内部",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 10,
+                                  "fontWeight": "500"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "JDL8C",
+                          "name": "Install Button",
+                          "fill": "#10B981",
+                          "cornerRadius": 6,
+                          "gap": 6,
+                          "padding": [
+                            8,
+                            20
+                          ],
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "3hEAt",
+                              "name": "install_text2",
+                              "fill": "#FFFFFF",
+                              "content": "添加",
+                              "fontFamily": "Inter",
+                              "fontSize": 14,
+                              "fontWeight": "500"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "bU0UP",
+                  "name": "Plugin Item 3",
+                  "width": "fill_container",
+                  "fill": "#F9FAFB",
+                  "cornerRadius": 8,
+                  "stroke": {
+                    "thickness": 1,
+                    "fill": "#E5E7EB"
+                  },
+                  "gap": 12,
+                  "padding": 16,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "OFKRG",
+                      "name": "Plugin Header",
+                      "width": "fill_container",
+                      "gap": 12,
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "Vv8HU",
+                          "name": "Plugin Info",
+                          "width": 387,
+                          "justifyContent": "space_between",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "Lop2d",
+                              "name": "Plugin Name",
+                              "gap": 8,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "K0ShS",
+                                  "name": "plugin_name3",
+                                  "fill": "#1F2937",
+                                  "content": "ECDict",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 15,
+                                  "fontWeight": "600"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "MPH6y",
+                                  "name": "plugin_desc3",
+                                  "fill": "#6B7280",
+                                  "content": "高质量词典",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "5BU2w",
+                              "name": "External Badge",
+                              "fill": "#DBEAFE",
+                              "cornerRadius": 12,
+                              "gap": 4,
+                              "padding": [
+                                2,
+                                8
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "RpO9z",
+                                  "name": "Badge Text",
+                                  "fill": "#1E40AF",
+                                  "content": "外部",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 11,
+                                  "fontWeight": "500"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "YFViB",
+                          "name": "Close Button",
+                          "width": 24,
+                          "height": 24,
+                          "fill": "#ffffffff",
+                          "cornerRadius": 4,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "hIKYe",
+                              "name": "closeIcon",
+                              "width": 24,
+                              "height": 24,
+                              "iconFontName": "trash-2",
+                              "iconFontFamily": "lucide",
+                              "fill": "#ff0000ff"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "OQx3N",
+                          "name": "Install Button",
+                          "fill": "#10B981",
+                          "cornerRadius": 6,
+                          "gap": 6,
+                          "padding": [
+                            8,
+                            20
+                          ],
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "FcpPB",
+                              "name": "install_text3",
+                              "fill": "#FFFFFF",
+                              "content": "添加",
+                              "fontFamily": "Inter",
+                              "fontSize": 14,
+                              "fontWeight": "500"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "8NP2S",
+              "name": "Footer Buttons",
+              "width": "fill_container",
+              "gap": 12,
+              "justifyContent": "end",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "pLBjf",
+                  "name": "Cancel Button",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 6,
+                  "stroke": {
+                    "thickness": 1,
+                    "fill": "#E5E7EB"
+                  },
+                  "gap": 8,
+                  "padding": [
+                    10,
+                    24
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "4FKWG",
+                      "name": "cancel_text1",
+                      "fill": "#374151",
+                      "content": "取消",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "eC0xr",
+      "x": -16,
+      "y": 854,
+      "name": "Service Config Window",
+      "width": 600,
+      "height": 480,
+      "fill": "#FFFFFF",
+      "cornerRadius": 12,
+      "stroke": {
+        "thickness": 1,
+        "fill": "#E5E7EB"
+      },
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "ws4Ms",
+          "name": "Title Bar",
+          "width": "fill_container",
+          "height": 44,
+          "fill": "#F9FAFB",
+          "cornerRadius": [
+            12,
+            12,
+            0,
+            0
+          ],
+          "stroke": {
+            "thickness": 0,
+            "fill": "#E5E7EB"
+          },
+          "gap": 12,
+          "padding": [
+            0,
+            16
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "70EGC",
+              "name": "Title Left",
+              "width": "fill_container",
+              "gap": 10,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "rectangle",
+                  "cornerRadius": 5,
+                  "id": "NLZjO",
+                  "name": "Icon",
+                  "fill": "#3B82F6",
+                  "width": 20,
+                  "height": 20
+                },
+                {
+                  "type": "text",
+                  "id": "uZ7Kw",
+                  "name": "config_title_text",
+                  "fill": "#1F2937",
+                  "content": "配置服务",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "kuasS",
+              "name": "Close Button",
+              "width": 24,
+              "height": 24,
+              "fill": "#FEE2E2",
+              "cornerRadius": 4,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "mmbsV",
+                  "name": "closeIcon",
+                  "width": 14,
+                  "height": 14,
+                  "iconFontName": "x",
+                  "iconFontFamily": "lucide",
+                  "fill": "$font"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "KDKzf",
+              "name": "Window Controls",
+              "width": "fit_content(0)",
+              "height": "fit_content(0)",
+              "gap": 8
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "fY4xf",
+          "name": "Main Content",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "padding": 24,
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "hLDMO",
+              "name": "Plugin Header",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "QyjFQ",
+                  "name": "Header Content",
+                  "width": "fill_container",
+                  "fill": "#F0F9FF",
+                  "cornerRadius": 12,
+                  "stroke": {
+                    "thickness": 1,
+                    "fill": "#BAE6FD"
+                  },
+                  "gap": 16,
+                  "padding": 20,
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "id": "Qzzd7",
+                      "fill": "#CCCCCC",
+                      "width": 62,
+                      "height": 58
+                    },
+                    {
+                      "type": "frame",
+                      "id": "bfFJ6",
+                      "name": "Name Field",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 8,
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "nQiAi",
+                          "name": "Name Input",
+                          "width": "fill_container",
+                          "height": 44,
+                          "fill": "#F9FAFB",
+                          "cornerRadius": 8,
+                          "stroke": {
+                            "thickness": 1,
+                            "fill": "#E5E7EB"
+                          },
+                          "padding": [
+                            0,
+                            16
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "YXxAV",
+                              "name": "name_input_text",
+                              "fill": "#1F2937",
+                              "content": "Google 翻译",
+                              "fontFamily": "Inter",
+                              "fontSize": 16,
+                              "fontWeight": "600"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "WmA3L",
+                          "name": "desc_text",
+                          "fill": "#6B7280",
+                          "content": "配置您的翻译服务参数，包括 API 密钥、默认语言和超时设置",
+                          "lineHeight": 1.5,
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "lE3fe",
+              "name": "Config Form",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "43nx6",
+                  "name": "API Key Field",
+                  "width": "fill_container",
+                  "gap": 8,
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "KsacQ",
+                      "name": "config_api_label",
+                      "fill": "#374151",
+                      "content": "API 密钥",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Yf4zT",
+                      "name": "API Input",
+                      "width": 329,
+                      "height": 40,
+                      "fill": "#F9FAFB",
+                      "cornerRadius": 8,
+                      "stroke": {
+                        "thickness": 1,
+                        "fill": "#E5E7EB"
+                      },
+                      "padding": [
+                        0,
+                        12
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "j0P2x",
+                          "name": "config_api_placeholder",
+                          "fill": "#9CA3AF",
+                          "content": "输入您的 API 密钥",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "QWaaP",
+                  "name": "Language Field",
+                  "width": "fill_container",
+                  "gap": 8,
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "C74gQ",
+                      "name": "config_lang_label",
+                      "fill": "#374151",
+                      "content": "默认翻译语言",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "iTK0L",
+                      "name": "Language Select",
+                      "width": 125,
+                      "height": 40,
+                      "fill": "#F9FAFB",
+                      "cornerRadius": 8,
+                      "stroke": {
+                        "thickness": 1,
+                        "fill": "#E5E7EB"
+                      },
+                      "gap": 8,
+                      "padding": [
+                        0,
+                        12
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "Bejh8",
+                          "name": "config_lang_value",
+                          "fill": "#374151",
+                          "content": "中文（简体）",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "1zHuw",
+                          "name": "config_lang_arrow",
+                          "fill": "#9CA3AF",
+                          "content": "▼",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "u1i1S",
+                  "name": "Timeout Field",
+                  "width": "fill_container",
+                  "gap": 8,
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "OWqLG",
+                      "name": "config_timeout_label",
+                      "fill": "#374151",
+                      "content": "请求超时时间（秒）",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "wZBUr",
+                      "name": "Timeout Input",
+                      "width": 122,
+                      "height": 40,
+                      "fill": "#F9FAFB",
+                      "cornerRadius": 8,
+                      "stroke": {
+                        "thickness": 1,
+                        "fill": "#E5E7EB"
+                      },
+                      "padding": [
+                        0,
+                        12
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "eXdOi",
+                          "name": "config_timeout_value",
+                          "fill": "#374151",
+                          "content": "30",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "N5mk9",
+              "name": "Footer Buttons",
+              "width": "fill_container",
+              "gap": 12,
+              "justifyContent": "end",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "vqFXP",
+                  "name": "Cancel Button",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 6,
+                  "stroke": {
+                    "thickness": 1,
+                    "fill": "#E5E7EB"
+                  },
+                  "gap": 8,
+                  "padding": [
+                    10,
+                    24
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "7nC4l",
+                      "name": "config_cancel_text",
+                      "fill": "#374151",
+                      "content": "取消",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "FwJoK",
+                  "name": "Save Button",
+                  "fill": "#3B82F6",
+                  "cornerRadius": 6,
+                  "gap": 8,
+                  "padding": [
+                    10,
+                    24
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "PHS80",
+                      "name": "config_save_text",
+                      "fill": "#FFFFFF",
+                      "content": "保存配置",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
                     }
                   ]
                 }
