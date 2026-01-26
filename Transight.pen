@@ -2009,9 +2009,12 @@
                       "type": "frame",
                       "id": "6kXa5",
                       "name": "Service Section",
+                      "width": "fill_container",
+                      "height": 431,
                       "fill": "#ffffff",
                       "layout": "vertical",
                       "gap": 16,
+                      "justifyContent": "space_between",
                       "children": [
                         {
                           "type": "text",
