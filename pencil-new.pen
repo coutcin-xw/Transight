@@ -1,0 +1,736 @@
+{
+  "version": "2.6",
+  "children": [
+    {
+      "type": "frame",
+      "id": "UDY8n",
+      "x": -86,
+      "y": 16,
+      "name": "Translation Window",
+      "clip": true,
+      "width": 298,
+      "height": 542,
+      "fill": "#FFFFFF",
+      "cornerRadius": 12,
+      "stroke": {
+        "thickness": 1,
+        "fill": "#E5E7EB"
+      },
+      "effect": {
+        "type": "shadow",
+        "shadowType": "outer",
+        "color": "#0000001A",
+        "offset": {
+          "x": 0,
+          "y": 4
+        },
+        "blur": 20
+      },
+      "layout": "vertical",
+      "gap": 12,
+      "padding": [
+        12,
+        16,
+        16,
+        16
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "FBrIT",
+          "name": "Title Bar",
+          "width": "fill_container",
+          "gap": 12,
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "rectangle",
+              "cornerRadius": 6,
+              "id": "AT3fJ",
+              "name": "Icon",
+              "fill": "#3B82F6",
+              "width": 24,
+              "height": 24
+            },
+            {
+              "type": "text",
+              "id": "o3vKz",
+              "name": "Title",
+              "fill": "#1F2937",
+              "content": "Transight",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "bWhBv",
+              "name": "Title Controls",
+              "gap": 4,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "Ikh5v",
+                  "name": "Pin Button",
+                  "width": 24,
+                  "height": 24,
+                  "fill": "#F3F4F6",
+                  "cornerRadius": 4,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "8EGuh",
+                      "name": "pinIcon",
+                      "width": 14,
+                      "height": 14,
+                      "iconFontName": "map-pin",
+                      "iconFontFamily": "lucide",
+                      "fill": "$font"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "K3BXz",
+                  "name": "Settings Button",
+                  "width": 24,
+                  "height": 24,
+                  "fill": "#F3F4F6",
+                  "cornerRadius": 4,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "XGZbg",
+                      "name": "settingsIcon",
+                      "width": 14,
+                      "height": 14,
+                      "iconFontName": "settings",
+                      "iconFontFamily": "feather",
+                      "fill": "$font"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "TsG1H",
+                  "name": "Close Button",
+                  "width": 24,
+                  "height": 24,
+                  "fill": "#FEE2E2",
+                  "cornerRadius": 4,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "3LwSL",
+                      "name": "closeIcon",
+                      "width": 14,
+                      "height": 14,
+                      "iconFontName": "x",
+                      "iconFontFamily": "feather",
+                      "fill": "$font"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "FA7rM",
+          "name": "Input Section",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 8,
+          "children": [
+            {
+              "type": "frame",
+              "id": "BspTI",
+              "name": "Language Selector",
+              "width": "fill_container",
+              "gap": 8,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "lwS3n",
+                  "name": "Results Label",
+                  "fill": "#374151",
+                  "content": "原文",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "frame",
+                  "id": "S2Kc6",
+                  "name": "Source Language",
+                  "width": 90,
+                  "height": 30,
+                  "fill": "#F9FAFB",
+                  "cornerRadius": 8,
+                  "stroke": {
+                    "thickness": 1,
+                    "fill": "#E5E7EB"
+                  },
+                  "gap": 8,
+                  "padding": [
+                    0,
+                    12
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "14cy0",
+                      "name": "Language Text",
+                      "fill": "#374151",
+                      "textGrowth": "fixed-width",
+                      "width": 56,
+                      "content": "自动检测",
+                      "textAlignVertical": "middle",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "zoAxM",
+                      "name": "Dropdown Icon",
+                      "fill": "#9CA3AF",
+                      "content": "▼",
+                      "textAlignVertical": "middle",
+                      "fontFamily": "Inter",
+                      "fontSize": 10,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "6NIga",
+                  "name": "Swap Button",
+                  "width": 28,
+                  "height": 28,
+                  "fill": "#F3F4F6",
+                  "cornerRadius": 6,
+                  "stroke": {
+                    "thickness": 1,
+                    "fill": "#E5E7EB"
+                  },
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "jrFdL",
+                      "name": "settingsIcon",
+                      "width": 14,
+                      "height": 14,
+                      "iconFontName": "arrow-right-left",
+                      "iconFontFamily": "lucide",
+                      "fill": "$font"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "gLj8o",
+                  "name": "Target Language",
+                  "width": 90,
+                  "height": 30,
+                  "fill": "#F9FAFB",
+                  "cornerRadius": 8,
+                  "stroke": {
+                    "thickness": 1,
+                    "fill": "#E5E7EB"
+                  },
+                  "gap": 8,
+                  "padding": [
+                    0,
+                    12
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "v8z8T",
+                      "name": "Language Text",
+                      "fill": "#374151",
+                      "content": "中文",
+                      "textAlignVertical": "middle",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "stQ3j",
+                      "name": "Dropdown Icon",
+                      "fill": "#9CA3AF",
+                      "content": "▼",
+                      "textAlignVertical": "middle",
+                      "fontFamily": "Inter",
+                      "fontSize": 10,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "9S3Mt",
+              "name": "Input Box",
+              "width": "fill_container",
+              "height": 80,
+              "fill": "#F9FAFB",
+              "cornerRadius": 8,
+              "stroke": {
+                "thickness": 1,
+                "fill": "#E5E7EB"
+              },
+              "layout": "vertical",
+              "padding": 10,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "sg2Hv",
+                  "name": "Placeholder",
+                  "fill": "#9CA3AF",
+                  "content": "在此输入或选中文本...",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "L95TH",
+          "name": "Results Section",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 10,
+          "children": [
+            {
+              "type": "frame",
+              "id": "fcsaC",
+              "name": "Results Header",
+              "width": "fill_container",
+              "gap": 8,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "IRhfE",
+                  "name": "Results Label",
+                  "fill": "#374151",
+                  "content": "翻译结果",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "frame",
+                  "id": "w9WQW",
+                  "name": "Results Count",
+                  "fill": "#DBEAFE",
+                  "cornerRadius": 12,
+                  "gap": 4,
+                  "padding": [
+                    2,
+                    8
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "fM2Ky",
+                      "name": "Count",
+                      "fill": "#1E40AF",
+                      "content": "3 个插件",
+                      "fontFamily": "Inter",
+                      "fontSize": 11,
+                      "fontWeight": "500"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "ACiuL",
+              "name": "Plugin 1 - Google",
+              "width": "fill_container",
+              "fill": "#FFFFFF",
+              "cornerRadius": 8,
+              "stroke": {
+                "thickness": 1,
+                "fill": "#E5E7EB"
+              },
+              "layout": "vertical",
+              "gap": 6,
+              "padding": 10,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "4pqMs",
+                  "name": "Plugin Header",
+                  "width": "fill_container",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "cornerRadius": 4,
+                      "id": "GGuHO",
+                      "name": "Plugin Icon",
+                      "fill": "#4285F4",
+                      "width": 20,
+                      "height": 20
+                    },
+                    {
+                      "type": "text",
+                      "id": "Ixjdq",
+                      "name": "Plugin Name",
+                      "fill": "#1F2937",
+                      "content": "Google 翻译",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "iewKY",
+                      "name": "Badge",
+                      "fill": "#D1FAE5",
+                      "cornerRadius": 10,
+                      "padding": [
+                        2,
+                        8
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "h8xev",
+                          "name": "Badge Text",
+                          "fill": "#065F46",
+                          "content": "推荐",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "uQv0U",
+                  "name": "Translation Result",
+                  "fill": "#111827",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Hello, how are you today?",
+                  "lineHeight": 1.5,
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "AstI9",
+                  "name": "Actions",
+                  "width": "fill_container",
+                  "gap": 8,
+                  "justifyContent": "end",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "YH9fj",
+                      "name": "Copy Button",
+                      "fill": "#F3F4F6",
+                      "cornerRadius": 6,
+                      "gap": 6,
+                      "padding": [
+                        4,
+                        8
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "YL4T4",
+                          "name": "copyIcon1",
+                          "width": 12,
+                          "height": 12,
+                          "iconFontName": "copy",
+                          "iconFontFamily": "feather",
+                          "fill": "$font"
+                        },
+                        {
+                          "type": "text",
+                          "id": "U3tfj",
+                          "name": "Copy Text",
+                          "fill": "#4B5563",
+                          "content": "复制",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "KJSKM",
+              "name": "Plugin 2 - DeepL",
+              "width": "fill_container",
+              "fill": "#FFFFFF",
+              "cornerRadius": 8,
+              "stroke": {
+                "thickness": 1,
+                "fill": "#E5E7EB"
+              },
+              "layout": "vertical",
+              "gap": 6,
+              "padding": 10,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "r1fnZ",
+                  "name": "Plugin Header",
+                  "width": "fill_container",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "cornerRadius": 4,
+                      "id": "E0FmP",
+                      "name": "Plugin Icon",
+                      "fill": "#0F2C4F",
+                      "width": 20,
+                      "height": 20
+                    },
+                    {
+                      "type": "text",
+                      "id": "dDBDR",
+                      "name": "Plugin Name",
+                      "fill": "#1F2937",
+                      "content": "DeepL 翻译",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "rTCKS",
+                  "name": "Translation Result",
+                  "fill": "#111827",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Hi there! How are you doing today?",
+                  "lineHeight": 1.5,
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "zepEy",
+                  "name": "Actions",
+                  "width": "fill_container",
+                  "gap": 8,
+                  "justifyContent": "end",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "pzeRt",
+                      "name": "Copy Button",
+                      "fill": "#F3F4F6",
+                      "cornerRadius": 6,
+                      "gap": 6,
+                      "padding": [
+                        4,
+                        8
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "KxYDr",
+                          "name": "copyIcon2",
+                          "width": 12,
+                          "height": 12,
+                          "iconFontName": "copy",
+                          "iconFontFamily": "feather",
+                          "fill": "$font"
+                        },
+                        {
+                          "type": "text",
+                          "id": "IwXqN",
+                          "name": "Copy Text",
+                          "fill": "#4B5563",
+                          "content": "复制",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "QhtBR",
+              "name": "Plugin 3 - Baidu",
+              "width": "fill_container",
+              "fill": "#FFFFFF",
+              "cornerRadius": 8,
+              "stroke": {
+                "thickness": 1,
+                "fill": "#E5E7EB"
+              },
+              "layout": "vertical",
+              "gap": 6,
+              "padding": 10,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "VW1vL",
+                  "name": "Plugin Header",
+                  "width": "fill_container",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "cornerRadius": 4,
+                      "id": "ZgwiJ",
+                      "name": "Plugin Icon",
+                      "fill": "#2932E1",
+                      "width": 20,
+                      "height": 20
+                    },
+                    {
+                      "type": "text",
+                      "id": "mzi2K",
+                      "name": "Plugin Name",
+                      "fill": "#1F2937",
+                      "content": "百度翻译",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "hkieM",
+                  "name": "Translation Result",
+                  "fill": "#111827",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "你好，你今天怎么样？",
+                  "lineHeight": 1.5,
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "xIVKb",
+                  "name": "Actions",
+                  "width": "fill_container",
+                  "gap": 8,
+                  "justifyContent": "end",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "UaOMJ",
+                      "name": "Copy Button",
+                      "fill": "#F3F4F6",
+                      "cornerRadius": 6,
+                      "gap": 6,
+                      "padding": [
+                        4,
+                        8
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "cs1IE",
+                          "name": "copyIcon3",
+                          "width": 12,
+                          "height": 12,
+                          "iconFontName": "copy",
+                          "iconFontFamily": "feather",
+                          "fill": "$font"
+                        },
+                        {
+                          "type": "text",
+                          "id": "lnA0i",
+                          "name": "Copy Text",
+                          "fill": "#4B5563",
+                          "content": "复制",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "themes": {
+    "Theme": [
+      "Default"
+    ]
+  },
+  "variables": {
+    "font": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#6B7280",
+          "theme": {
+            "Theme": "Default"
+          }
+        }
+      ]
+    }
+  }
+}
