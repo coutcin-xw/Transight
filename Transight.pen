@@ -370,7 +370,8 @@
             {
               "type": "frame",
               "id": "zG5O9",
-              "name": "Frame 1",
+              "name": "Results List",
+              "width": "fill_container",
               "layout": "vertical",
               "gap": 5,
               "alignItems": "center",
