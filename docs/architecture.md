@@ -707,38 +707,38 @@ Tauri 2 使用 capability-based 权限系统：
 
 ## 9. 开发计划
 
-### 第一阶段：基础框架 (MVP)
+### 第一阶段：基础框架 (MVP) ✅
 
-- [ ] Tauri 2 + Vue 3 项目初始化
-- [ ] 翻译弹窗窗口创建（自定义边框、阴影、置顶）
-- [ ] 文本选择捕获集成（selection crate + 剪贴板回退）
-- [ ] 基础翻译引擎（单源：Google Translate 免费接口）
-- [ ] 全局快捷键注册
-- [ ] 系统托盘
+- [x] Tauri 2 + Vue 3 项目初始化
+- [x] 翻译弹窗窗口创建（自定义边框、拖动、阴影）
+- [x] 文本选择捕获集成（X11/Wayland/Accessibility/UI Automation + 剪贴板回退）
+- [x] 基础翻译引擎（Google Translate 免费接口）
+- [x] 全局快捷键注册（Ctrl+Alt+Q / Escape）
+- [x] 系统托盘
 
-### 第二阶段：核心功能
+### 第二阶段：核心功能 ✅
 
-- [ ] 多翻译源并行翻译
-- [ ] 内置适配器：Google、DeepL、OpenAI Compat、Ollama
-- [ ] 翻译结果展示（多卡片）
-- [ ] 语言自动检测
-- [ ] 一键复制
+- [x] 多翻译源并行翻译（tokio::spawn 逐源 emit translation-result 事件）
+- [x] 内置适配器：Google Translate、DeepL、OpenAI Compat（覆盖 Ollama/vLLM）
+- [x] 翻译结果展示（多卡片，每源独立状态，折叠展开）
+- [x] 语言自动检测（各适配器内部处理）
+- [x] 一键复制 + Markdown 渲染切换
 
-### 第三阶段：管理功能
+### 第三阶段：管理功能 ✅
 
-- [ ] 设置窗口（常规设置、快捷键配置）
-- [ ] 服务管理（添加/编辑/删除/测试）
-- [ ] 插件列表窗口
-- [ ] 服务配置窗口
-- [ ] 自定义 HTTP 插件支持
+- [x] 设置窗口（常规/服务/快捷键三个标签页）
+- [x] 服务管理 CRUD（添加/编辑/删除/启用禁用，插件动态配置表单）
+- [x] PluginRegistry + ConfigStore 插件配置架构
+- [x] 快捷键录制编辑（window.addEventListener 全局监听）
+- [x] 语言下拉菜单（15 种语言）
 
-### 第四阶段：进阶功能
+### 第四阶段：进阶功能（部分完成）
 
 - [ ] 翻译历史记录
 - [ ] 离线翻译支持（本地词典）
 - [ ] OCR 识图翻译（ImageTranslator trait → 截图 OCR → 自动翻译）
-- [ ] 导入/导出配置
-- [ ] 暗色模式
+- [x] 导入/导出配置
+- [x] 暗色模式（CSS 变量 + 跨窗口同步）
 - [ ] 国际化（i18n）
 
 ---
@@ -747,83 +747,62 @@ Tauri 2 使用 capability-based 权限系统：
 
 ```
 Transight/
-  src-tauri/                       # Rust 后端
+  src-tauri/                       # Rust 后端 (edition 2024)
     src/
-      main.rs                      # 入口、窗口管理
-      lib.rs                       # 模块导出
-      commands/                    # Tauri 命令
+      main.rs                      # 入口
+      lib.rs                       # 窗口/托盘/快捷键/插件注册
+      commands/
         mod.rs
-        translate.rs               # 翻译命令
-        service.rs                 # 服务管理命令
-        plugin.rs                  # 插件管理命令
-        config.rs                  # 配置命令
-        shortcut.rs                # 快捷键命令
-        window.rs                  # 窗口管理命令
-      engine/                      # 翻译引擎
+        translate.rs               # 翻译 + 插件/服务/配置管理命令
+        selection.rs               # 文本选择命令
+        window.rs                  # 窗口/pin/主题广播命令
+      engine/
         mod.rs
-        translator.rs              # Translator trait
-        orchestor.rs               # 翻译编排器
-      plugins/                     # 插件实现
+        translator.rs              # Translator trait + PluginConfig
+        registry.rs                # PluginRegistry (Arc<dyn Translator>)
+        google.rs                  # Google Translate 适配器 (传统)
+        deepl.rs                   # DeepL 适配器 (传统)
+        openai.rs                  # LLM 适配器 (Prompt + JSONPath)
+      config/
         mod.rs
-        registry.rs                # 插件注册表
-        google.rs                  # Google 翻译适配器
-        deepl.rs                   # DeepL 适配器
-        openai.rs                  # OpenAI 兼容适配器
-        ollama.rs                  # Ollama 适配器
-        generic_http.rs            # 通用 HTTP 适配器
-      config/                      # 配置管理
+        store.rs                   # ConfigStore (JSON 文件持久化)
+      services/
         mod.rs
-        store.rs                   # 配置存储 (SQLite)
-        models.rs                  # 配置数据模型
-      selection/                   # 文本选择捕获
-        mod.rs
-        platform/                  # 平台特定实现
-      db/                          # 数据库
-        mod.rs
-        migrations.rs
-        models.rs
+        manager.rs                 # Service CRUD
+      selection/
+        mod.rs                     # 跨平台文本选择 (X11/Wayland/Accessibility/UI Automation)
+        linux.rs
+        macos.rs
+        windows.rs
     Cargo.toml
     tauri.conf.json
     capabilities/
       default.json
     icons/
-  src/                             # Vue 3 前端
-    main.ts
-    App.vue
-    windows/                       # 窗口入口组件
-      TranslationWindow.vue
-      SettingsWindow.vue
-      PluginListWindow.vue
-      ServiceConfigWindow.vue
-    components/                    # 通用组件
-      TitleBar.vue
-      LanguageSelector.vue
-      InputSection.vue
-      ResultsSection.vue
-      TranslationCard.vue
-      Sidebar.vue
-      SettingItem.vue
-      ServiceCard.vue
-      HotkeyItem.vue
-      SearchBar.vue
-      PluginCard.vue
-      ConfigForm.vue
-    stores/                        # Pinia 状态管理
-      translation.ts
-      settings.ts
-    types/                         # TypeScript 类型
-      index.ts
-    utils/                         # 工具函数
+  src/                             # Vue 3 + TS 前端
+    main.ts                        # 入口 (Pinia + Router)
+    App.vue                        # 根组件 (暗色模式 + 事件监听)
+    router.ts                      # / → 翻译弹窗, /#/settings → 设置
+    windows/
+      TranslationWindow.vue        # 翻译弹窗 (语言选择/输入/结果列表/Go按钮)
+      SettingsWindow.vue           # 设置窗口 (常规/服务/快捷键 + 导入导出)
+    components/
+      TitleBar.vue                 # 自定义标题栏 (拖动/固定/设置/关闭)
+      TranslationCard.vue          # 翻译结果卡片 (折叠/Markdown/复制)
+      ServiceManager.vue           # 服务管理面板 (CRUD + 动态配置表单)
+    stores/
+      translation.ts               # Pinia 翻译状态 (事件驱动)
+    types/
+      index.ts                     # TypeScript 类型定义
+    utils/
       tauri.ts                     # Tauri invoke 封装
-      clipboard.ts
-    styles/                        # 样式
-      variables.css
-      global.css
-  docs/                            # 文档
-    architecture.md                # 本文档
-    api.md                         # API 文档
+  selection/                       # 自研 selection crate 骨架
+    linux.rs / macos.rs / windows.rs
+    Cargo.toml
+  docs/
+    architecture.md                # 系统架构设计
+    system-design.md               # 系统设计文档
+  Transight.pen                    # Pencil UI 设计文件
   package.json
   vite.config.ts
-  tsconfig.json
-  Transight.pen                    # Pencil 设计文件
 ```
