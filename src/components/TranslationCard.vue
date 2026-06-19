@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { marked } from "marked";
 import type { TranslationResult } from "../types";
 
 defineProps<{
@@ -13,15 +14,24 @@ const emit = defineEmits<{
 }>();
 
 const collapsed = ref(false);
+const useMarkdown = ref(false);
 
 function toggleCollapse() {
   collapsed.value = !collapsed.value;
+}
+
+function renderMd(text: string): string {
+  if (!useMarkdown.value || !text) return "";
+  try {
+    return marked.parse(text) as string;
+  } catch {
+    return text;
+  }
 }
 </script>
 
 <template>
   <div class="card" :class="{ 'card-error': result.error, 'card-loading': loading }">
-    <!-- 头部始终可见 (折叠后只显示这行) -->
     <div class="card-header" @click="toggleCollapse">
       <div class="provider-info">
         <div
@@ -36,6 +46,13 @@ function toggleCollapse() {
         <span v-else-if="loading && !result.translated_text" class="loading-badge">翻译中</span>
       </div>
       <div class="header-actions">
+        <button
+          v-if="!result.error && result.translated_text"
+          class="md-toggle"
+          :class="{ active: useMarkdown }"
+          @click.stop="useMarkdown = !useMarkdown"
+          title="Markdown 渲染"
+        >M↓</button>
         <button
           v-if="!result.error && result.translated_text"
           class="copy-btn"
@@ -55,14 +72,18 @@ function toggleCollapse() {
       </div>
     </div>
 
-    <!-- 展开内容 -->
     <div v-if="!collapsed" class="card-body">
       <div v-if="loading && !result.translated_text && !result.error" class="loading-line">
         <span class="loading-dot" />
         <span class="loading-dot" />
         <span class="loading-dot" />
       </div>
-      <p v-else-if="result.error" class="card-error-text">{{ result.error }}</p>
+      <div v-else-if="result.error" class="card-error-text">{{ result.error }}</div>
+      <div
+        v-else-if="useMarkdown && result.translated_text"
+        class="card-text markdown-body"
+        v-html="renderMd(result.translated_text)"
+      />
       <p v-else class="card-text">{{ result.translated_text }}</p>
       <div v-if="result.source_lang" class="card-actions">
         <span class="lang-tag">{{ result.source_lang }} → {{ result.target_lang }}</span>
@@ -81,6 +102,7 @@ function toggleCollapse() {
   border-radius: 8px;
   width: 100%;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .card-header {
@@ -142,6 +164,27 @@ function toggleCollapse() {
   flex-shrink: 0;
 }
 
+.md-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px; height: 22px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: #f9fafb;
+  cursor: pointer;
+  color: #9ca3af;
+  font-size: 10px;
+  font-weight: 700;
+  transition: all 0.15s;
+}
+
+.md-toggle.active {
+  background: var(--color-accent-light);
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
 .copy-btn,
 .collapse-btn {
   display: flex;
@@ -183,7 +226,46 @@ function toggleCollapse() {
   line-height: 1.5;
   color: #111827;
   word-break: break-word;
+  max-height: 120px;
+  overflow-y: auto;
+  padding-right: 4px;
 }
+
+.card-text::-webkit-scrollbar {
+  width: 3px;
+}
+
+.card-text::-webkit-scrollbar-thumb {
+  background: #e5e7eb;
+  border-radius: 2px;
+}
+
+/* markdown 渲染 */
+.markdown-body :deep(p) { margin: 0 0 4px; }
+.markdown-body :deep(p:last-child) { margin-bottom: 0; }
+.markdown-body :deep(code) {
+  background: #f3f4f6;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-size: 11px;
+}
+.markdown-body :deep(pre) {
+  background: #f3f4f6;
+  padding: 6px 8px;
+  border-radius: 4px;
+  overflow-x: auto;
+  font-size: 11px;
+}
+.markdown-body :deep(pre code) {
+  background: none;
+  padding: 0;
+}
+.markdown-body :deep(ul), .markdown-body :deep(ol) {
+  padding-left: 16px;
+  margin: 2px 0;
+}
+.markdown-body :deep(strong) { font-weight: 600; }
+.markdown-body :deep(em) { font-style: italic; }
 
 .card-actions {
   display: flex;
@@ -250,6 +332,8 @@ function toggleCollapse() {
   background: #fff5f5;
   border-radius: 6px;
   border: 1px solid #fecaca;
+  max-height: 120px;
+  overflow-y: auto;
 }
 
 .lang-tag {

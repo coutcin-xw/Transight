@@ -71,7 +71,7 @@ document.addEventListener("keydown", onKeydown);
 </script>
 
 <template>
-  <div class="translate-window" @keydown="onKeydown">
+  <div class="translate-window" @keydown="onKeydown" @contextmenu.prevent>
     <!-- 标题栏 -->
     <TitleBar
       title="Transight"
@@ -138,7 +138,6 @@ document.addEventListener("keydown", onKeydown);
         v-model="inputText"
         class="input-area"
         placeholder="在此输入或选中文本..."
-        @keydown.enter.exact="handleTranslate"
       />
     </div>
 
