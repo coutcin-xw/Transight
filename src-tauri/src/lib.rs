@@ -138,6 +138,8 @@ pub fn run() {
             commands::translate::update_service,
             commands::translate::delete_service,
             commands::translate::toggle_service,
+            commands::translate::get_config,
+            commands::translate::update_config,
             commands::selection::get_selected_text,
         ])
         .setup(move |app| {
@@ -202,18 +204,25 @@ pub fn run() {
                     .expect("Failed to load tray icon");
 
             let pinned_tray = pinned.clone();
+            let cfg_tray = config_store.clone();
             let _tray = TrayIconBuilder::new()
                 .icon(tray_icon)
                 .menu(&menu)
                 .on_menu_event(move |app, event| {
                     let p = pinned_tray.clone();
+                    let cfg = cfg_tray.clone();
                     match event.id().as_ref() {
                         "show" => {
+                            // 托盘打开: 跟随配置 default_pin
+                            let pin = cfg
+                                .read()
+                                .map(|c| c.general.default_pin)
+                                .unwrap_or(false);
                             if let Some(w) = app.get_webview_window(TRANSLATE_WIN) {
                                 let _ = w.show();
                                 let _ = w.set_focus();
-                                p.store(true, Ordering::Relaxed);
-                                let _ = app.emit("pin-changed", true);
+                                p.store(pin, Ordering::Relaxed);
+                                let _ = app.emit("pin-changed", pin);
                             }
                         }
                         "settings" => {
@@ -250,16 +259,22 @@ pub fn run() {
             {
                 let handle = app.handle().clone();
                 let pinned_s = pinned.clone();
+                let cfg_s = config_store.clone();
                 let _ = app.global_shortcut().on_shortcut(
                     "Ctrl+Alt+Q",
                     move |_app, _sc, _event| {
                         let h = handle.clone();
                         let text_result = crate::selection::get_selected_text();
+                        // 读取配置的默认 pin 状态
+                        let default_pin = cfg_s
+                            .read()
+                            .map(|c| c.general.default_pin)
+                            .unwrap_or(false);
                         if let Some(w) = h.get_webview_window(TRANSLATE_WIN) {
                             let _ = w.show();
                             let _ = w.set_focus();
-                            pinned_s.store(false, Ordering::Relaxed);
-                            let _ = h.emit("pin-changed", false);
+                            pinned_s.store(default_pin, Ordering::Relaxed);
+                            let _ = h.emit("pin-changed", default_pin);
                             match text_result {
                                 Ok(text) if !text.is_empty() => {
                                     eprintln!(

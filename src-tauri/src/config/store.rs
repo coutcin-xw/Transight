@@ -35,6 +35,9 @@ pub struct GeneralConfig {
     pub auto_detect_lang: bool,
     #[serde(default)]
     pub auto_copy_result: bool,
+    /// 翻译窗口默认是否固定 (pin)
+    #[serde(default)]
+    pub default_pin: bool,
 }
 
 fn default_lang() -> String { "auto".into() }

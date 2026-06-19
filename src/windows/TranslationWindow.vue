@@ -90,10 +90,13 @@ document.addEventListener("keydown", onKeydown);
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
       </div>
 
-      <!-- 交换按钮 -->
+      <!-- 交换按钮 (左右交换图标) -->
       <button class="swap-btn" @click="swapLanguages" :disabled="store.sourceLang === 'auto'">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M7 16V4m0 0L3 8m4-4 4 4M17 8v12m0 0 4-4m-4 4-4-4" />
+          <path d="M17 3l4 4-4 4" />
+          <path d="M21 7H9a2 2 0 0 0-2 2v2" />
+          <path d="M7 21l-4-4 4-4" />
+          <path d="M3 17h12a2 2 0 0 0 2-2v-2" />
         </svg>
       </button>
 
@@ -102,6 +105,13 @@ document.addEventListener("keydown", onKeydown);
         <span class="lang-value">{{ LANGUAGES[store.targetLang] || store.targetLang }}</span>
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
       </div>
+
+      <!-- Go 按钮 (翻译中也可点击，打断并重试) -->
+      <button class="go-btn" @click="handleTranslate" :disabled="!inputText.trim()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
+      </button>
     </div>
 
     <!-- 输入区域 -->
@@ -123,16 +133,13 @@ document.addEventListener("keydown", onKeydown);
         </span>
       </div>
 
-      <div v-if="store.isLoading" class="loading">
-        <span>翻译中...</span>
-      </div>
-
-      <div v-else-if="store.hasResults" class="results-list">
+      <div v-if="store.hasResults || store.isLoading" class="results-list">
         <TranslationCard
           v-for="(result, idx) in store.results"
           :key="idx"
           :result="result"
           :index="idx"
+          :loading="store.isLoading"
           @copy="copyText"
         />
       </div>
@@ -216,6 +223,31 @@ document.addEventListener("keydown", onKeydown);
   cursor: not-allowed;
 }
 
+.go-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--color-accent);
+  border-radius: 6px;
+  background: var(--color-accent);
+  cursor: pointer;
+  color: #ffffff;
+  flex-shrink: 0;
+  margin-left: auto;
+  transition: all 0.15s;
+}
+
+.go-btn:hover:not(:disabled) {
+  background: #2563eb;
+}
+
+.go-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 /* 输入区域 */
 .input-section {
   flex-shrink: 0;
@@ -294,7 +326,6 @@ document.addEventListener("keydown", onKeydown);
   border-radius: 2px;
 }
 
-.loading,
 .empty-state {
   flex: 1;
   display: flex;

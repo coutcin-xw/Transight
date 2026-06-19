@@ -76,3 +76,15 @@ export async function deleteService(id: string): Promise<ServiceConfig[]> {
 export async function toggleService(id: string, enabled: boolean): Promise<ServiceConfig[]> {
   return invoke("toggle_service", { id, enabled });
 }
+
+// ─── 全局配置 ──────────────────────────────────────────────────────────────
+
+/** 获取全局配置 */
+export async function getConfig(): Promise<Record<string, unknown>> {
+  return invoke("get_config");
+}
+
+/** 更新全局配置 */
+export async function updateConfig(general: Record<string, unknown>): Promise<void> {
+  return invoke("update_config", { general });
+}

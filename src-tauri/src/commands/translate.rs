@@ -215,6 +215,33 @@ pub struct ServiceConfigDto {
     pub config: serde_json::Value,
 }
 
+// ─── 全局配置命令 ──────────────────────────────────────────────────────────
+
+/// 获取全局配置
+#[tauri::command]
+pub async fn get_config(
+    store: State<'_, ConfigStore>,
+) -> Result<serde_json::Value, String> {
+    let config = store.read().map_err(|e| format!("{e}"))?;
+    serde_json::to_value(&*config).map_err(|e| format!("{e}"))
+}
+
+/// 更新全局配置
+#[tauri::command]
+pub async fn update_config(
+    store: State<'_, ConfigStore>,
+    general: Option<serde_json::Value>,
+) -> Result<(), String> {
+    let mut config = store.write().map_err(|e| format!("{e}"))?;
+    if let Some(g) = general {
+        if let Ok(general_cfg) = serde_json::from_value(g) {
+            config.general = general_cfg;
+        }
+    }
+    save(&config)?;
+    Ok(())
+}
+
 impl From<ServiceConfig> for ServiceConfigDto {
     fn from(s: ServiceConfig) -> Self {
         Self {

@@ -21,6 +21,14 @@ export const useTranslationStore = defineStore("translation", () => {
     const input = text || sourceText.value;
     if (!input.trim()) return;
 
+    // 打断之前翻译: 清空旧结果, 立即展示占位卡片
+    results.value = [{
+      source_text: input,
+      translated_text: "",
+      source_lang: sourceLang.value,
+      target_lang: targetLang.value,
+      provider: "",
+    }];
     isLoading.value = true;
 
     if (sourceLang.value === "auto") {
