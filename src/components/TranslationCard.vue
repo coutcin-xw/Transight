@@ -226,6 +226,7 @@ function renderMd(text: string): string {
   line-height: 1.5;
   color: var(--color-text-primary);
   word-break: break-word;
+  white-space: pre-wrap;
   max-height: 120px;
   overflow-y: auto;
   padding-right: 4px;
@@ -240,6 +241,9 @@ function renderMd(text: string): string {
 }
 
 /* markdown 渲染 */
+.markdown-body {
+  white-space: normal;
+}
 .markdown-body :deep(p) { margin: 0 0 4px; }
 .markdown-body :deep(p:last-child) { margin-bottom: 0; }
 .markdown-body :deep(code) {
@@ -328,6 +332,7 @@ function renderMd(text: string): string {
   line-height: 1.5;
   color: #dc2626;
   word-break: break-word;
+  white-space: pre-wrap;
   padding: 6px 8px;
   background: #fff5f5;
   border-radius: 6px;
