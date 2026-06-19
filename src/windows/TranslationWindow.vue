@@ -33,21 +33,28 @@ function swapLanguages() {
   store.swapLanguages();
 }
 
-// 监听后端快捷键触发的选中文本事件
-let unlisten: (() => void) | null = null;
+// 监听后端事件
+let unlisten1: (() => void) | null = null;
+let unlisten2: (() => void) | null = null;
 
 onMounted(async () => {
-  unlisten = await listen<string>("selected-text", (event) => {
+  // 选中文本事件
+  unlisten1 = await listen<string>("selected-text", (event) => {
     const text = event.payload;
     if (text && text.trim()) {
       inputText.value = text.trim();
       handleTranslate();
     }
   });
+  // pin 状态同步 (后端可能通过托盘等改变 pin)
+  unlisten2 = await listen<boolean>("pin-changed", (event) => {
+    store.setPinned(event.payload);
+  });
 });
 
 onUnmounted(() => {
-  if (unlisten) unlisten();
+  if (unlisten1) unlisten1();
+  if (unlisten2) unlisten2();
 });
 
 // 监听键盘: Escape 关闭

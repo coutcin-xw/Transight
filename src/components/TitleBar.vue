@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { getCurrentWindow } from "@tauri-apps/api/window";
 import { openSettingsWindow, hideTranslateWindow } from "../utils/tauri";
 
 defineProps<{
@@ -12,11 +13,18 @@ defineProps<{
 const emit = defineEmits<{
   (e: "toggle-pin"): void;
 }>();
+
+function onTitleMouseDown() {
+  getCurrentWindow()
+    .startDragging()
+    .then(() => console.log("[transight] drag started"))
+    .catch((e) => console.error("[transight] drag error:", e));
+}
 </script>
 
 <template>
   <div class="title-bar">
-    <div class="title-left">
+    <div class="title-left" @mousedown="onTitleMouseDown">
       <div class="title-icon" />
       <span class="title-text">{{ title }}</span>
     </div>
@@ -74,6 +82,13 @@ const emit = defineEmits<{
   display: flex;
   align-items: center;
   gap: 10px;
+  flex: 1;
+  height: 100%;
+  cursor: grab;
+}
+
+.title-left:active {
+  cursor: grabbing;
 }
 
 .title-icon {
@@ -89,12 +104,15 @@ const emit = defineEmits<{
   font-weight: 600;
   color: var(--color-text-primary);
   white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
 }
 
 .title-controls {
   display: flex;
   align-items: center;
   gap: 4px;
+  flex-shrink: 0;
 }
 
 .ctrl-btn {

@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import type { TranslationResult } from "../types";
-import { translate, detectLanguage } from "../utils/tauri";
+import { translate, detectLanguage, setPinWindow } from "../utils/tauri";
 
 export const useTranslationStore = defineStore("translation", () => {
   // 状态
@@ -23,7 +23,6 @@ export const useTranslationStore = defineStore("translation", () => {
 
     isLoading.value = true;
 
-    // 自动检测语言
     if (sourceLang.value === "auto") {
       try {
         sourceLang.value = await detectLanguage(input);
@@ -44,7 +43,6 @@ export const useTranslationStore = defineStore("translation", () => {
         },
       ];
     } catch (e) {
-      // 翻译失败：仍生成卡片，内联展示错误
       results.value = [
         {
           source_text: input,
@@ -80,8 +78,18 @@ export const useTranslationStore = defineStore("translation", () => {
     sourceText.value = "";
   }
 
-  function togglePin() {
+  function setPinned(pinned: boolean) {
+    isPinned.value = pinned;
+  }
+
+  async function togglePin() {
     isPinned.value = !isPinned.value;
+    try {
+      await setPinWindow(isPinned.value);
+    } catch (e) {
+      console.error("[transight] set_pin_window failed:", e);
+      isPinned.value = !isPinned.value;
+    }
   }
 
   return {
@@ -98,6 +106,7 @@ export const useTranslationStore = defineStore("translation", () => {
     setTargetLang,
     swapLanguages,
     clearResults,
+    setPinned,
     togglePin,
   };
 });

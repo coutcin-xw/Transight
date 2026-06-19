@@ -2,6 +2,9 @@ mod commands;
 mod engine;
 mod selection;
 
+use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::Arc;
+
 use tauri::{
     menu::{MenuBuilder, MenuItemBuilder},
     tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent},
@@ -13,22 +16,29 @@ const SETTINGS_WIN: &str = "settings";
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+    // pin 状态: 控制失焦时是否自动隐藏
+    let is_pinned = Arc::new(AtomicBool::new(false));
+
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_global_shortcut::Builder::new().build())
         .plugin(tauri_plugin_clipboard_manager::init())
+        .manage(is_pinned.clone())
         .invoke_handler(tauri::generate_handler![
             commands::window::show_translate_window,
             commands::window::hide_translate_window,
             commands::window::open_settings_window,
             commands::window::close_settings_window,
+            commands::window::set_pin_window,
             commands::translate::translate,
             commands::translate::detect_language,
             commands::selection::get_selected_text,
         ])
-        .setup(|app| {
+        .setup(move |app| {
+            let pinned = is_pinned.clone();
+
             // ── 翻译弹窗 ──
-            let _translate = tauri::WebviewWindowBuilder::new(
+            let translate = tauri::WebviewWindowBuilder::new(
                 app,
                 TRANSLATE_WIN,
                 tauri::WebviewUrl::App("/".into()),
@@ -36,11 +46,24 @@ pub fn run() {
             .title("Transight")
             .inner_size(300.0, 540.0)
             .decorations(false)
-            .always_on_top(true)
+            .always_on_top(false)
             .visible(false)
             .skip_taskbar(true)
             .shadow(true)
             .build()?;
+
+            // 失焦时: 如果未固定则自动隐藏
+            let pinned_focus = pinned.clone();
+            let handle = app.handle().clone();
+            translate.on_window_event(move |event| {
+                if let tauri::WindowEvent::Focused(false) = event {
+                    if !pinned_focus.load(Ordering::Relaxed) {
+                        if let Some(w) = handle.get_webview_window(TRANSLATE_WIN) {
+                            let _ = w.hide();
+                        }
+                    }
+                }
+            });
 
             // ── 设置窗口 ──
             let _settings = tauri::WebviewWindowBuilder::new(
@@ -69,30 +92,36 @@ pub fn run() {
                 .item(&quit_item)
                 .build()?;
 
-            // 托盘图标 (嵌入 32x32 PNG)
             let tray_icon = tauri::image::Image::from_bytes(include_bytes!("../icons/32x32.png"))
                 .expect("Failed to load tray icon");
 
+            let pinned_tray = pinned.clone();
             let _tray = TrayIconBuilder::new()
                 .icon(tray_icon)
                 .menu(&menu)
-                .on_menu_event(|app, event| match event.id().as_ref() {
-                    "show" => {
-                        if let Some(w) = app.get_webview_window(TRANSLATE_WIN) {
-                            let _ = w.show();
-                            let _ = w.set_focus();
+                .on_menu_event(move |app, event| {
+                    let p = pinned_tray.clone();
+                    match event.id().as_ref() {
+                        "show" => {
+                            if let Some(w) = app.get_webview_window(TRANSLATE_WIN) {
+                                let _ = w.show();
+                                let _ = w.set_focus();
+                                // 托盘菜单显示时自动固定
+                                p.store(true, Ordering::Relaxed);
+                                let _ = app.emit("pin-changed", true);
+                            }
                         }
-                    }
-                    "settings" => {
-                        if let Some(w) = app.get_webview_window(SETTINGS_WIN) {
-                            let _ = w.show();
-                            let _ = w.set_focus();
+                        "settings" => {
+                            if let Some(w) = app.get_webview_window(SETTINGS_WIN) {
+                                let _ = w.show();
+                                let _ = w.set_focus();
+                            }
                         }
+                        "quit" => {
+                            app.exit(0);
+                        }
+                        _ => {}
                     }
-                    "quit" => {
-                        app.exit(0);
-                    }
-                    _ => {}
                 })
                 .on_tray_icon_event(|tray, event| {
                     if let TrayIconEvent::Click {
@@ -116,16 +145,18 @@ pub fn run() {
             // Ctrl+Alt+Q: 翻译选中文本
             {
                 let handle = app.handle().clone();
+                let pinned_s = pinned.clone();
                 let _ = app.global_shortcut().on_shortcut(
                     "Ctrl+Alt+Q",
                     move |_app, _sc, _event| {
                         let h = handle.clone();
-                        // 先获取文本（窗口隐藏时），再显示窗口
                         let text_result = crate::selection::get_selected_text();
                         if let Some(w) = h.get_webview_window(TRANSLATE_WIN) {
                             let _ = w.show();
                             let _ = w.set_focus();
-                            // 用全局 emit 确保事件送达
+                            // 快捷键触发时不固定，失焦自动隐藏
+                            pinned_s.store(false, Ordering::Relaxed);
+                            let _ = h.emit("pin-changed", false);
                             match text_result {
                                 Ok(text) if !text.is_empty() => {
                                     eprintln!(
