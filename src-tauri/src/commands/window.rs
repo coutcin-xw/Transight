@@ -6,6 +6,10 @@ use tauri::{Emitter, LogicalSize, Manager, State};
 const TRANSLATE_WIDTH: f64 = 350.0;
 const TRANSLATE_HEIGHT: f64 = 540.0;
 
+/// 设置窗口默认尺寸
+const SETTINGS_WIDTH: f64 = 700.0;
+const SETTINGS_HEIGHT: f64 = 540.0;
+
 /// 显示翻译弹窗（每次打开时重置为默认大小）
 #[tauri::command]
 pub async fn show_translate_window(app: tauri::AppHandle) -> Result<(), String> {
@@ -27,10 +31,11 @@ pub async fn hide_translate_window(app: tauri::AppHandle) -> Result<(), String> 
     Ok(())
 }
 
-/// 打开设置窗口
+/// 打开设置窗口（每次打开时重置为默认大小）
 #[tauri::command]
 pub async fn open_settings_window(app: tauri::AppHandle) -> Result<(), String> {
     if let Some(window) = app.get_webview_window("settings") {
+        let _ = window.set_size(LogicalSize::new(SETTINGS_WIDTH, SETTINGS_HEIGHT));
         window.show().map_err(|e| e.to_string())?;
         window.set_focus().map_err(|e| e.to_string())?;
     }

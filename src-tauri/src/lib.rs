@@ -20,6 +20,8 @@ const TRANSLATE_WIN: &str = "translate";
 const SETTINGS_WIN: &str = "settings";
 const TRANSLATE_WIDTH: f64 = 350.0;
 const TRANSLATE_HEIGHT: f64 = 540.0;
+const SETTINGS_WIDTH: f64 = 700.0;
+const SETTINGS_HEIGHT: f64 = 540.0;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -196,7 +198,7 @@ pub fn run() {
                 tauri::WebviewUrl::App("/#/settings".into()),
             )
             .title("Transight - 设置")
-            .inner_size(700.0, 540.0)
+            .inner_size(SETTINGS_WIDTH, SETTINGS_HEIGHT)
             .decorations(false)
             .visible(false)
             .center()
@@ -245,6 +247,7 @@ pub fn run() {
                         }
                         "settings" => {
                             if let Some(w) = app.get_webview_window(SETTINGS_WIN) {
+                                let _ = w.set_size(LogicalSize::new(SETTINGS_WIDTH, SETTINGS_HEIGHT));
                                 let _ = w.show();
                                 let _ = w.set_focus();
                             }

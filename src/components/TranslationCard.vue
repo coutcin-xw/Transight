@@ -149,7 +149,7 @@ function renderMd(text: string): string {
 }
 
 .provider-name {
-  font-size: 11px;
+  font-size: var(--text-xs);
   font-weight: 600;
   color: var(--color-text-secondary);
   white-space: nowrap;
@@ -174,7 +174,7 @@ function renderMd(text: string): string {
   background: var(--color-bg-secondary);
   cursor: pointer;
   color: var(--color-text-placeholder);
-  font-size: 10px;
+  font-size: var(--text-2xs);
   font-weight: 700;
   transition: all 0.15s;
 }
@@ -222,7 +222,7 @@ function renderMd(text: string): string {
 }
 
 .card-text {
-  font-size: 13px;
+  font-size: var(--text-base);
   line-height: 1.5;
   color: var(--color-text-primary);
   word-break: break-word;
@@ -250,14 +250,14 @@ function renderMd(text: string): string {
   background: var(--color-bg-secondary);
   padding: 1px 4px;
   border-radius: 3px;
-  font-size: 11px;
+  font-size: var(--text-xs);
 }
 .markdown-body :deep(pre) {
   background: var(--color-bg-secondary);
   padding: 6px 8px;
   border-radius: 4px;
   overflow-x: auto;
-  font-size: 11px;
+  font-size: var(--text-xs);
 }
 .markdown-body :deep(pre code) {
   background: none;
@@ -278,7 +278,7 @@ function renderMd(text: string): string {
 }
 
 .loading-badge {
-  font-size: 10px;
+  font-size: var(--text-2xs);
   font-weight: 500;
   color: var(--color-text-muted);
   background: var(--color-bg-secondary);
@@ -310,7 +310,7 @@ function renderMd(text: string): string {
 }
 
 .error-badge {
-  font-size: 10px;
+  font-size: var(--text-2xs);
   font-weight: 500;
   color: #dc2626;
   background: #fee2e2;
@@ -328,7 +328,7 @@ function renderMd(text: string): string {
 }
 
 .card-error-text {
-  font-size: 12px;
+  font-size: var(--text-sm);
   line-height: 1.5;
   color: #dc2626;
   word-break: break-word;
@@ -342,7 +342,7 @@ function renderMd(text: string): string {
 }
 
 .lang-tag {
-  font-size: 10px;
+  font-size: var(--text-2xs);
   color: var(--color-text-placeholder);
   background: var(--color-bg-secondary);
   padding: 1px 6px;

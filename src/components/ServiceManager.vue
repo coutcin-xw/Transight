@@ -179,14 +179,14 @@ onMounted(load);
 </template>
 
 <style scoped>
-.service-manager { font-size: 13px; }
+.service-manager { font-size: var(--text-base); }
 
 .toolbar { margin-bottom: 16px; }
 .btn-add {
   padding: 6px 16px;
   background: #3b82f6; color: #fff;
   border: none; border-radius: 6px;
-  font-size: 12px; cursor: pointer;
+  font-size: var(--text-sm); cursor: pointer;
 }
 .btn-add:hover { background: #2563eb; }
 
@@ -216,7 +216,7 @@ onMounted(load);
 
 .svc-info { display: flex; flex-direction: column; gap: 2px; }
 .svc-name { font-weight: 600; color: var(--color-text-primary); }
-.svc-plugin { font-size: 10px; color: var(--color-text-placeholder); }
+.svc-plugin { font-size: var(--text-2xs); color: var(--color-text-placeholder); }
 
 .svc-actions { display: flex; align-items: center; gap: 6px; }
 
@@ -224,7 +224,7 @@ onMounted(load);
   padding: 4px 10px;
   border: 1px solid var(--color-border);
   border-radius: 4px;
-  font-size: 11px;
+  font-size: var(--text-xs);
   cursor: pointer;
   background: var(--color-card-bg);
 }
@@ -253,15 +253,15 @@ onMounted(load);
   max-height: 80vh;
   overflow-y: auto;
 }
-.modal h3 { margin-bottom: 16px; font-size: 16px; }
+.modal h3 { margin-bottom: 16px; font-size: var(--text-lg); }
 
 .form { display: flex; flex-direction: column; gap: 8px; }
-.form label { font-size: 12px; color: var(--color-text-muted); }
+.form label { font-size: var(--text-sm); color: var(--color-text-muted); }
 .form input, .form textarea {
   padding: 8px 10px;
   border: 1px solid var(--color-border);
   border-radius: 6px;
-  font-size: 12px;
+  font-size: var(--text-sm);
   background: var(--color-bg-secondary);
   font-family: inherit;
   resize: vertical;
@@ -272,7 +272,7 @@ onMounted(load);
 }
 
 .field-hint {
-  font-size: 10px;
+  font-size: var(--text-2xs);
   color: var(--color-text-placeholder);
   margin-top: -6px;
   margin-bottom: 2px;
@@ -282,7 +282,7 @@ onMounted(load);
   background: var(--color-bg-secondary);
   padding: 1px 4px;
   border-radius: 3px;
-  font-size: 10px;
+  font-size: var(--text-2xs);
 }
 
 .modal-actions {
@@ -290,7 +290,7 @@ onMounted(load);
   margin-top: 20px;
 }
 .btn-cancel, .btn-save {
-  padding: 8px 20px; border-radius: 6px; font-size: 13px; cursor: pointer;
+  padding: 8px 20px; border-radius: 6px; font-size: var(--text-base); cursor: pointer;
 }
 .btn-cancel { background: var(--color-card-bg); border: 1px solid var(--color-border); color: var(--color-text-secondary); }
 .btn-save { background: #3b82f6; border: none; color: #fff; }
@@ -302,7 +302,7 @@ onMounted(load);
   display: flex; align-items: center; justify-content: space-between;
   padding: 8px 10px;
   border: 1px solid var(--color-border); border-radius: 6px;
-  background: var(--color-bg-secondary); font-size: 12px; color: var(--color-text-secondary);
+  background: var(--color-bg-secondary); font-size: var(--text-sm); color: var(--color-text-secondary);
   cursor: pointer;
 }
 
@@ -316,7 +316,7 @@ onMounted(load);
 }
 
 .dropdown-item {
-  padding: 8px 10px; font-size: 11px; cursor: pointer;
+  padding: 8px 10px; font-size: var(--text-xs); cursor: pointer;
 }
 
 .dropdown-item:hover { background: var(--color-bg-secondary); }

@@ -372,7 +372,7 @@ onUnmounted(() => {
 }
 
 .title-text {
-  font-size: 14px;
+  font-size: var(--text-md);
   font-weight: 600;
   color: var(--color-text-primary);
 }
@@ -414,7 +414,7 @@ onUnmounted(() => {
   padding: 0 16px;
   height: 40px;
   border-radius: 6px;
-  font-size: 13px;
+  font-size: var(--text-base);
   color: #4b5563;
   cursor: pointer;
   transition: all 0.15s;
@@ -436,7 +436,7 @@ onUnmounted(() => {
 }
 
 .tab-content h2 {
-  font-size: 18px;
+  font-size: var(--text-xl);
   font-weight: 600;
   color: var(--color-text-primary);
   margin-bottom: 24px;
@@ -466,13 +466,13 @@ onUnmounted(() => {
 }
 
 .setting-label {
-  font-size: 13px;
+  font-size: var(--text-base);
   font-weight: 500;
   color: var(--color-text-secondary);
 }
 
 .setting-desc {
-  font-size: 11px;
+  font-size: var(--text-xs);
   color: var(--color-text-muted);
 }
 
@@ -517,7 +517,7 @@ onUnmounted(() => {
   background: var(--color-card-bg);
   border: 1px solid var(--color-border);
   border-radius: 6px;
-  font-size: 12px;
+  font-size: var(--text-sm);
   color: var(--color-text-secondary);
   cursor: pointer;
   flex-shrink: 0;
@@ -528,7 +528,7 @@ kbd {
   background: var(--color-bg-secondary);
   border: 1px solid #d1d5db;
   border-radius: 4px;
-  font-size: 11px;
+  font-size: var(--text-xs);
   font-family: monospace;
   color: var(--color-text-secondary);
   cursor: pointer;
@@ -551,7 +551,7 @@ kbd.recording {
   50% { opacity: 0.6; }
 }
 
-.hint { font-size: 11px; color: var(--color-text-placeholder); font-weight: 400; margin-left: 8px; }
+.hint { font-size: var(--text-xs); color: var(--color-text-placeholder); font-weight: 400; margin-left: 8px; }
 
 /* 主题按钮 */
 .theme-btns { display: flex; gap: 4px; }
@@ -560,7 +560,7 @@ kbd.recording {
   border: 1px solid var(--color-border);
   border-radius: 6px;
   background: var(--color-bg-secondary);
-  font-size: 12px; cursor: pointer;
+  font-size: var(--text-sm); cursor: pointer;
   color: var(--color-text-secondary);
 }
 .theme-btns button.active {
@@ -574,7 +574,7 @@ kbd.recording {
   border: 1px solid var(--color-border);
   border-radius: 6px;
   background: var(--color-card-bg);
-  font-size: 12px; cursor: pointer;
+  font-size: var(--text-sm); cursor: pointer;
   color: var(--color-text-secondary);
 }
 .btn-sm:hover { background: var(--color-bg-secondary); }
@@ -596,7 +596,7 @@ kbd.recording {
 
 .dropdown-item {
   padding: 6px 10px;
-  font-size: 11px;
+  font-size: var(--text-xs);
   cursor: pointer;
 }
 

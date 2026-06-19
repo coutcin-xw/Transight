@@ -209,7 +209,7 @@ document.addEventListener("keydown", onKeydown);
   border: 1px solid var(--color-border);
   background: var(--color-bg-secondary);
   cursor: pointer;
-  font-size: 11px;
+  font-size: var(--text-xs);
   color: var(--color-text-secondary);
   transition: border-color 0.15s;
 }
@@ -293,7 +293,7 @@ document.addEventListener("keydown", onKeydown);
 
 .dropdown-item {
   padding: 6px 12px;
-  font-size: 11px;
+  font-size: var(--text-xs);
   color: var(--color-text-secondary);
   cursor: pointer;
   white-space: nowrap;
@@ -331,7 +331,7 @@ document.addEventListener("keydown", onKeydown);
   border-radius: 8px;
   background: var(--color-bg-secondary);
   font-family: var(--font-family);
-  font-size: 12px;
+  font-size: var(--text-sm);
   color: var(--color-text-primary);
   resize: none;
   outline: none;
@@ -364,13 +364,13 @@ document.addEventListener("keydown", onKeydown);
 }
 
 .results-label {
-  font-size: 12px;
+  font-size: var(--text-md);
   font-weight: 500;
   color: var(--color-text-secondary);
 }
 
 .results-count {
-  font-size: 10px;
+  font-size: var(--text-2xs);
   font-weight: 500;
   color: #1e40af;
   background: #dbeafe;
@@ -401,7 +401,7 @@ document.addEventListener("keydown", onKeydown);
   align-items: center;
   justify-content: center;
   color: var(--color-text-muted);
-  font-size: 12px;
+  font-size: var(--text-sm);
 }
 
 </style>

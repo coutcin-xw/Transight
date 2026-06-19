@@ -55,7 +55,16 @@ onMounted(async () => {
   --color-accent-light: #dbeafe;
   --color-danger-light: #fee2e2;
   --color-card-bg: #ffffff;
-  --font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-family: "Inter", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "WenQuanYi Micro Hei", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* 字号令牌 — 统一管理，修改此处即可全局生效 */
+  --text-2xs:  11px;   /* 标签/徽章/提示 (原10px) */
+  --text-xs:   12px;   /* 描述/次要文字 (原11px) */
+  --text-sm:   13px;   /* 输入框/按钮/表单 (原12px) */
+  --text-base: 14px;   /* 正文/导航项 (原13px) */
+  --text-md:   15px;   /* 标题/全局基底 (原14px) */
+  --text-lg:   17px;   /* modal 标题 (原16px) */
+  --text-xl:   19px;   /* 页面大标题 (原18px) */
 }
 
 [data-theme="dark"] {
@@ -72,14 +81,26 @@ onMounted(async () => {
   --color-card-bg: #1e1e3a;
 }
 
+/* 自带中文字体 — 打包在 public/fonts/，离线可用 */
+@font-face {
+  font-family: "Noto Sans SC";
+  src: url("/fonts/NotoSansSC-Regular.ttf") format("truetype");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
 html, body {
   font-family: var(--font-family);
-  font-size: 13px;
+  font-size: var(--text-md);
   color: var(--color-text-primary);
   background: transparent;
   overflow: hidden;
   user-select: none;
   -webkit-user-select: none;
+  /* 字体渲染平滑 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 input, textarea, select, button {

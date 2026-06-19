@@ -100,7 +100,7 @@ function onTitleMouseDown() {
 }
 
 .title-text {
-  font-size: 14px;
+  font-size: var(--text-md);
   font-weight: 600;
   color: var(--color-text-primary);
   white-space: nowrap;
