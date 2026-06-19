@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
+import { listen } from "@tauri-apps/api/event";
 import { useTranslationStore } from "../stores/translation";
-import { getSelectedText, hideTranslateWindow } from "../utils/tauri";
+import { hideTranslateWindow } from "../utils/tauri";
 import { LANGUAGES } from "../types";
 import TitleBar from "../components/TitleBar.vue";
 import TranslationCard from "../components/TranslationCard.vue";
@@ -18,19 +19,6 @@ async function handleTranslate() {
   await store.doTranslate(inputText.value);
 }
 
-// 从选中文本初始化
-async function initFromSelection() {
-  try {
-    const text = await getSelectedText();
-    if (text) {
-      inputText.value = text;
-      await handleTranslate();
-    }
-  } catch {
-    // 获取选中文本失败，静默处理
-  }
-}
-
 // 复制到剪贴板
 async function copyText(text: string) {
   try {
@@ -45,7 +33,24 @@ function swapLanguages() {
   store.swapLanguages();
 }
 
-// 监听键盘
+// 监听后端快捷键触发的选中文本事件
+let unlisten: (() => void) | null = null;
+
+onMounted(async () => {
+  unlisten = await listen<string>("selected-text", (event) => {
+    const text = event.payload;
+    if (text && text.trim()) {
+      inputText.value = text.trim();
+      handleTranslate();
+    }
+  });
+});
+
+onUnmounted(() => {
+  if (unlisten) unlisten();
+});
+
+// 监听键盘: Escape 关闭
 function onKeydown(e: KeyboardEvent) {
   if (e.key === "Escape") {
     hideTranslateWindow();
@@ -55,8 +60,6 @@ function onKeydown(e: KeyboardEvent) {
   }
 }
 
-// 初始化
-initFromSelection();
 document.addEventListener("keydown", onKeydown);
 </script>
 

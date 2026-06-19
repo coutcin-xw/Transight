@@ -69,7 +69,12 @@ pub fn run() {
                 .item(&quit_item)
                 .build()?;
 
+            // 托盘图标 (嵌入 32x32 PNG)
+            let tray_icon = tauri::image::Image::from_bytes(include_bytes!("../icons/32x32.png"))
+                .expect("Failed to load tray icon");
+
             let _tray = TrayIconBuilder::new()
+                .icon(tray_icon)
                 .menu(&menu)
                 .on_menu_event(|app, event| match event.id().as_ref() {
                     "show" => {
@@ -108,23 +113,35 @@ pub fn run() {
             // ── 全局快捷键 ──
             use tauri_plugin_global_shortcut::GlobalShortcutExt;
 
-            // Ctrl+Shift+T: 翻译选中文本
+            // Ctrl+Alt+Q: 翻译选中文本
             {
                 let handle = app.handle().clone();
                 let _ = app.global_shortcut().on_shortcut(
-                    "Ctrl+Shift+T",
+                    "Ctrl+Alt+Q",
                     move |_app, _sc, _event| {
                         let h = handle.clone();
-                        tauri::async_runtime::spawn(async move {
-                            let text = crate::selection::get_selected_text().ok();
-                            if let Some(w) = h.get_webview_window(TRANSLATE_WIN) {
-                                let _ = w.show();
-                                let _ = w.set_focus();
-                                if let Some(text) = text {
-                                    let _ = w.emit("selected-text", text);
+                        // 先获取文本（窗口隐藏时），再显示窗口
+                        let text_result = crate::selection::get_selected_text();
+                        if let Some(w) = h.get_webview_window(TRANSLATE_WIN) {
+                            let _ = w.show();
+                            let _ = w.set_focus();
+                            // 用全局 emit 确保事件送达
+                            match text_result {
+                                Ok(text) if !text.is_empty() => {
+                                    eprintln!(
+                                        "[transight] selected: {}",
+                                        &text[..text.len().min(50)]
+                                    );
+                                    let _ = h.emit("selected-text", text);
+                                }
+                                Ok(_) => {
+                                    eprintln!("[transight] selection empty");
+                                }
+                                Err(e) => {
+                                    eprintln!("[transight] selection failed: {e}");
                                 }
                             }
-                        });
+                        }
                     },
                 );
             }
