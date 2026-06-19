@@ -6,12 +6,16 @@
 
 ## 功能
 
-- **划词翻译**：选中文本 + 快捷键，弹出无边框翻译弹窗
+- **划词翻译**：选中文本 + 快捷键，弹出无边框翻译弹窗 (350×540, 可 resize)
 - **多翻译源**：Google Translate、DeepL、OpenAI 兼容（支持 Ollama/vLLM 等本地 LLM）
-- **逐源独立**：每个翻译源独立加载、独立展示、折叠/展开
+- **逐源独立**：每个翻译源独立加载、独立卡片展示、折叠/展开、Markdown 渲染
+- **窗口体验**：标题栏全区域拖拽、四边+四角 resize 热区、Pin 固定失焦不隐藏
 - **插件系统**：PluginRegistry + ConfigStore，服务可配置可扩展
-- **管理界面**：设置窗口（常规/服务/快捷键），服务 CRUD，暗色模式，导入导出
+- **管理界面**：设置窗口（常规/服务/快捷键），服务 CRUD，暗色模式，配置导入导出
+- **统一字号**：CSS 自定义属性令牌集中管理，全局一键调级
+- **自带字体**：Noto Sans SC 中文可变字体打包，跨平台中文渲染一致
 - **系统托盘**：常驻托盘，左键显示窗口，右键菜单
+- **CI/CD**：GitHub Actions 跨平台构建 (.deb/.rpm/.dmg/.msi)，Tag 推送自动发布 Release
 
 ## 技术栈
 
@@ -20,7 +24,8 @@
 | 桌面框架 | Tauri 2 |
 | 前端 | Vue 3 + TypeScript + Pinia + Vue Router |
 | 后端 | Rust (edition 2024) + tokio + reqwest |
-| 配置 | JSON 文件 (~/.config/transight/config.json) |
+| 配置 | JSON (~/.config/transight/config.json) |
+| 字体 | Inter (西文) + Noto Sans SC (中文, 自带) |
 
 ## 开发
 
