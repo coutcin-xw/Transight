@@ -23,12 +23,12 @@ function onTitleMouseDown() {
 </script>
 
 <template>
-  <div class="title-bar">
-    <div class="title-left" @mousedown="onTitleMouseDown">
+  <div class="title-bar" @mousedown="onTitleMouseDown">
+    <div class="title-left">
       <div class="title-icon" />
       <span class="title-text">{{ title }}</span>
     </div>
-    <div class="title-controls">
+    <div class="title-controls" @mousedown.stop>
       <button
         v-if="showPin"
         class="ctrl-btn pin-btn"
@@ -72,10 +72,15 @@ function onTitleMouseDown() {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 0 4px;
+  padding: 10px 4px 0 4px;
   height: 32px;
   width: 100%;
   flex-shrink: 0;
+  cursor: grab;
+}
+
+.title-bar:active {
+  cursor: grabbing;
 }
 
 .title-left {
@@ -84,11 +89,6 @@ function onTitleMouseDown() {
   gap: 10px;
   flex: 1;
   height: 100%;
-  cursor: grab;
-}
-
-.title-left:active {
-  cursor: grabbing;
 }
 
 .title-icon {

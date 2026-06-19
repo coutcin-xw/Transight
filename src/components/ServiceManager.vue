@@ -196,7 +196,6 @@ onMounted(load);
   display: flex;
   flex-direction: column;
   gap: 8px;
-  max-width: 460px;
 }
 
 .service-card {
@@ -249,7 +248,8 @@ onMounted(load);
   background: var(--color-card-bg);
   border-radius: 12px;
   padding: 24px;
-  width: 400px;
+  width: 100%;
+  max-width: 400px;
   max-height: 80vh;
   overflow-y: auto;
 }

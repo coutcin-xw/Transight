@@ -13,11 +13,13 @@ use engine::translator::PluginConfig;
 use tauri::{
     menu::{MenuBuilder, MenuItemBuilder},
     tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent},
-    Emitter, Manager,
+    Emitter, LogicalSize, Manager,
 };
 
 const TRANSLATE_WIN: &str = "translate";
 const SETTINGS_WIN: &str = "settings";
+const TRANSLATE_WIDTH: f64 = 350.0;
+const TRANSLATE_HEIGHT: f64 = 540.0;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -165,7 +167,9 @@ pub fn run() {
                 tauri::WebviewUrl::App("/".into()),
             )
             .title("Transight")
-            .inner_size(300.0, 540.0)
+            .inner_size(TRANSLATE_WIDTH, TRANSLATE_HEIGHT)
+            .min_inner_size(280.0, 360.0)
+            .resizable(true)
             .decorations(false)
             .always_on_top(false)
             .visible(false)
@@ -232,6 +236,7 @@ pub fn run() {
                                 .map(|c| c.general.default_pin)
                                 .unwrap_or(false);
                             if let Some(w) = app.get_webview_window(TRANSLATE_WIN) {
+                                let _ = w.set_size(LogicalSize::new(TRANSLATE_WIDTH, TRANSLATE_HEIGHT));
                                 let _ = w.show();
                                 let _ = w.set_focus();
                                 p.store(pin, Ordering::Relaxed);
@@ -259,6 +264,7 @@ pub fn run() {
                     {
                         let app = tray.app_handle();
                         if let Some(w) = app.get_webview_window(TRANSLATE_WIN) {
+                            let _ = w.set_size(LogicalSize::new(TRANSLATE_WIDTH, TRANSLATE_HEIGHT));
                             let _ = w.show();
                             let _ = w.set_focus();
                         }
@@ -284,6 +290,7 @@ pub fn run() {
                             .map(|c| c.general.default_pin)
                             .unwrap_or(false);
                         if let Some(w) = h.get_webview_window(TRANSLATE_WIN) {
+                            let _ = w.set_size(LogicalSize::new(TRANSLATE_WIDTH, TRANSLATE_HEIGHT));
                             let _ = w.show();
                             let _ = w.set_focus();
                             pinned_s.store(default_pin, Ordering::Relaxed);

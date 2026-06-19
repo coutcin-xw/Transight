@@ -6,6 +6,7 @@ import { hideTranslateWindow } from "../utils/tauri";
 import { LANGUAGES } from "../types";
 import TitleBar from "../components/TitleBar.vue";
 import TranslationCard from "../components/TranslationCard.vue";
+import ResizeHandles from "../components/ResizeHandles.vue";
 
 const store = useTranslationStore();
 const inputText = ref("");
@@ -165,15 +166,19 @@ document.addEventListener("keydown", onKeydown);
         <p>暂无翻译结果</p>
       </div>
     </div>
+
+    <!-- resize 边缘拖拽 -->
+    <ResizeHandles />
   </div>
 </template>
 
 <style scoped>
 .translate-window {
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 100vh;
-  padding: 10px 14px 14px;
+  padding: 0 14px 14px;
   gap: 8px;
   background: var(--color-card-bg);
   border-radius: 12px;
@@ -192,11 +197,13 @@ document.addEventListener("keydown", onKeydown);
 }
 
 .lang-dropdown {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
   height: 28px;
+  min-width: 8em;
   padding: 0 10px;
   border-radius: 8px;
   border: 1px solid var(--color-border);
@@ -213,6 +220,8 @@ document.addEventListener("keydown", onKeydown);
 
 .lang-value {
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .swap-btn {
@@ -265,10 +274,7 @@ document.addEventListener("keydown", onKeydown);
   cursor: not-allowed;
 }
 
-/* 语言下拉菜单 */
-.lang-dropdown {
-  position: relative;
-}
+/* 语言下拉菜单 (样式在主 .lang-dropdown 块中定义) */
 
 .dropdown-menu {
   position: absolute;

@@ -4,6 +4,7 @@ import { getCurrentWindow } from "@tauri-apps/api/window";
 import { closeSettingsWindow } from "../utils/tauri";
 import { LANGUAGES } from "../types";
 import ServiceManager from "../components/ServiceManager.vue";
+import ResizeHandles from "../components/ResizeHandles.vue";
 
 const activeTab = ref("general");
 const showSourceDropdown = ref(false);
@@ -163,12 +164,12 @@ onUnmounted(() => {
 <template>
   <div class="settings-window" @contextmenu.prevent>
     <!-- 标题栏 -->
-    <div class="title-bar">
-      <div class="title-left" @mousedown="onTitleMouseDown">
+    <div class="title-bar" @mousedown="onTitleMouseDown">
+      <div class="title-left">
         <div class="title-icon" />
         <span class="title-text">Transight 设置</span>
       </div>
-      <button class="close-btn" @click="closeSettingsWindow">
+      <button class="close-btn" @mousedown.stop @click="closeSettingsWindow">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M18 6 6 18M6 6l12 12" />
         </svg>
@@ -319,11 +320,15 @@ onUnmounted(() => {
         </div>
       </div>
     </div>
+
+    <!-- resize 边缘拖拽 -->
+    <ResizeHandles />
   </div>
 </template>
 
 <style scoped>
 .settings-window {
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -344,13 +349,17 @@ onUnmounted(() => {
   border-bottom: 1px solid var(--color-border);
   border-radius: 12px 12px 0 0;
   flex-shrink: 0;
+  cursor: grab;
+}
+
+.title-bar:active {
+  cursor: grabbing;
 }
 
 .title-left {
   display: flex;
   align-items: center;
   gap: 10px;
-  cursor: grab;
   flex: 1;
 }
 
@@ -437,7 +446,6 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  max-width: 420px;
 }
 
 .setting-item {

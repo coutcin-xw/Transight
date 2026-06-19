@@ -1,11 +1,17 @@
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
-use tauri::{Emitter, Manager, State};
+use tauri::{Emitter, LogicalSize, Manager, State};
 
-/// 显示翻译弹窗
+/// 翻译窗口默认尺寸
+const TRANSLATE_WIDTH: f64 = 350.0;
+const TRANSLATE_HEIGHT: f64 = 540.0;
+
+/// 显示翻译弹窗（每次打开时重置为默认大小）
 #[tauri::command]
 pub async fn show_translate_window(app: tauri::AppHandle) -> Result<(), String> {
     if let Some(window) = app.get_webview_window("translate") {
+        // 重置为默认大小，关闭/隐藏期间的手动调整不保留
+        let _ = window.set_size(LogicalSize::new(TRANSLATE_WIDTH, TRANSLATE_HEIGHT));
         window.show().map_err(|e| e.to_string())?;
         window.set_focus().map_err(|e| e.to_string())?;
     }
