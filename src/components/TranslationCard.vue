@@ -12,20 +12,27 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <div class="card">
+  <div class="card" :class="{ 'card-error': result.error }">
     <div class="card-header">
       <div class="provider-info">
-        <div class="provider-icon" />
+        <div class="provider-icon" :class="{ 'icon-error': result.error }" />
         <span class="provider-name">{{ result.provider }}</span>
+        <span v-if="result.error" class="error-badge">错误</span>
       </div>
-      <button class="copy-btn" @click="emit('copy', result.translated_text)" title="复制">
+      <button
+        v-if="!result.error"
+        class="copy-btn"
+        @click="emit('copy', result.translated_text)"
+        title="复制"
+      >
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <rect x="9" y="9" width="13" height="13" rx="2" />
           <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
         </svg>
       </button>
     </div>
-    <p class="card-text">{{ result.translated_text }}</p>
+    <p v-if="result.error" class="card-error-text">{{ result.error }}</p>
+    <p v-else class="card-text">{{ result.translated_text }}</p>
     <div class="card-actions">
       <span class="lang-tag">{{ result.source_lang }} → {{ result.target_lang }}</span>
     </div>
@@ -101,6 +108,35 @@ const emit = defineEmits<{
   align-items: center;
   justify-content: flex-end;
   gap: 8px;
+}
+
+.card-error {
+  border-color: #fecaca;
+  background: #fef2f2;
+}
+
+.icon-error {
+  background: #fecaca;
+}
+
+.error-badge {
+  font-size: 10px;
+  font-weight: 500;
+  color: #dc2626;
+  background: #fee2e2;
+  padding: 0 6px;
+  border-radius: 4px;
+}
+
+.card-error-text {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #dc2626;
+  word-break: break-word;
+  padding: 6px 8px;
+  background: #fff5f5;
+  border-radius: 6px;
+  border: 1px solid #fecaca;
 }
 
 .lang-tag {

@@ -120,10 +120,6 @@ document.addEventListener("keydown", onKeydown);
         <span>翻译中...</span>
       </div>
 
-      <div v-else-if="store.error" class="error">
-        <span>{{ store.error }}</span>
-      </div>
-
       <div v-else-if="store.hasResults" class="results-list">
         <TranslationCard
           v-for="(result, idx) in store.results"
@@ -292,7 +288,6 @@ document.addEventListener("keydown", onKeydown);
 }
 
 .loading,
-.error,
 .empty-state {
   flex: 1;
   display: flex;
@@ -302,7 +297,4 @@ document.addEventListener("keydown", onKeydown);
   font-size: 12px;
 }
 
-.error {
-  color: #ef4444;
-}
 </style>

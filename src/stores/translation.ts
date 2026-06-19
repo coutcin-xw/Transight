@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import type { TranslationResult } from "../types";
-import { translate, detectLanguage } from "../utils/tauri";
+import { translate, detectLanguage, setPinWindow } from "../utils/tauri";
 
 export const useTranslationStore = defineStore("translation", () => {
   // 状态
@@ -11,7 +11,6 @@ export const useTranslationStore = defineStore("translation", () => {
   const results = ref<TranslationResult[]>([]);
   const isLoading = ref(false);
   const isPinned = ref(false);
-  const error = ref<string | null>(null);
 
   // 计算属性
   const hasResults = computed(() => results.value.length > 0);
@@ -23,16 +22,18 @@ export const useTranslationStore = defineStore("translation", () => {
     if (!input.trim()) return;
 
     isLoading.value = true;
-    error.value = null;
+
+    // 自动检测语言
+    if (sourceLang.value === "auto") {
+      try {
+        sourceLang.value = await detectLanguage(input);
+      } catch {
+        // 检测失败用默认值
+      }
+    }
 
     try {
-      // 自动检测语言
-      if (sourceLang.value === "auto") {
-        sourceLang.value = await detectLanguage(input);
-      }
-
       const result = await translate(input, sourceLang.value, targetLang.value);
-      // M1 阶段: 单结果，后续 M2 改为多结果
       results.value = [
         {
           source_text: input,
@@ -43,7 +44,17 @@ export const useTranslationStore = defineStore("translation", () => {
         },
       ];
     } catch (e) {
-      error.value = String(e);
+      // 翻译失败：仍生成卡片，内联展示错误
+      results.value = [
+        {
+          source_text: input,
+          translated_text: "",
+          source_lang: sourceLang.value,
+          target_lang: targetLang.value,
+          provider: "Google Translate",
+          error: `翻译失败: ${e}`,
+        },
+      ];
     } finally {
       isLoading.value = false;
     }
@@ -67,11 +78,17 @@ export const useTranslationStore = defineStore("translation", () => {
   function clearResults() {
     results.value = [];
     sourceText.value = "";
-    error.value = null;
   }
 
-  function togglePin() {
+  async function togglePin() {
     isPinned.value = !isPinned.value;
+    try {
+      await setPinWindow(isPinned.value);
+      console.log(`[transight] pin: ${isPinned.value}`);
+    } catch (e) {
+      console.error(`[transight] set_pin_window failed: ${e}`);
+      isPinned.value = !isPinned.value; // 回退
+    }
   }
 
   return {
@@ -81,7 +98,6 @@ export const useTranslationStore = defineStore("translation", () => {
     results,
     isLoading,
     isPinned,
-    error,
     hasResults,
     resultCount,
     doTranslate,

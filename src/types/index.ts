@@ -7,6 +7,7 @@ export interface TranslationResult {
   source_lang: string;
   target_lang: string;
   provider: string;
+  error?: string;  // 翻译失败时的错误信息
 }
 
 /** 语言对 */

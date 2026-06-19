@@ -37,3 +37,14 @@ pub async fn close_settings_window(app: tauri::AppHandle) -> Result<(), String> 
     }
     Ok(())
 }
+
+/// 切换翻译弹窗置顶 (固定)
+#[tauri::command]
+pub async fn set_pin_window(app: tauri::AppHandle, pinned: bool) -> Result<(), String> {
+    if let Some(window) = app.get_webview_window("translate") {
+        window
+            .set_always_on_top(pinned)
+            .map_err(|e| e.to_string())?;
+    }
+    Ok(())
+}
