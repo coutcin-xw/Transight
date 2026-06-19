@@ -1,3 +1,25 @@
-.spec-workflow
+
+.claude# Logs
+dist
+dist-ssr
+.DS_Store
+# Editor directories and files
+.idea
+lerna-debug.log*
+*.local
+*.log
+logs
+*.njsproj
+node_modules
+npm-debug.log*
+*.ntvs*
 .playwright-mcp
-.claude
+pnpm-debug.log*
+*.sln
+.spec-workflow
+*.suo
+*.sw?
+.vscode/*
+!.vscode/extensions.json
+yarn-debug.log*
+yarn-error.log*
