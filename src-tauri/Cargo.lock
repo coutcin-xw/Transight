@@ -4468,6 +4468,7 @@ name = "transight"
 version = "0.1.0"
 dependencies = [
  "arboard",
+ "async-trait",
  "enigo",
  "reqwest 0.12.28",
  "serde",

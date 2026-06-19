@@ -1,5 +1,6 @@
 //! Google Translate 适配器 (免费 Web API)
 
+use async_trait::async_trait;
 use crate::engine::translator::{PluginConfig, TranslationResult, Translator};
 
 pub struct GoogleTranslator;
@@ -10,6 +11,7 @@ impl GoogleTranslator {
     }
 }
 
+#[async_trait]
 impl Translator for GoogleTranslator {
     fn id(&self) -> &str {
         "google-translate"
@@ -72,6 +74,7 @@ impl Translator for GoogleTranslator {
             source_lang: detected_lang,
             target_lang: target_lang.to_string(),
             provider: "Google Translate".to_string(),
+            error: None,
         })
     }
 }

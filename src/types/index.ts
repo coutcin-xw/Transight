@@ -38,25 +38,32 @@ export interface GlobalConfig {
   hotkeys: Record<string, string>;
 }
 
-/** 服务 */
-export interface Service {
+/** 服务配置 (与后端 ServiceConfigDto 对应) */
+export interface ServiceConfig {
   id: string;
-  pluginId: string;
+  plugin_id: string;
   name: string;
   enabled: boolean;
   config: Record<string, unknown>;
-  priority: number;
-  createdAt: string;
-  updatedAt: string;
 }
 
-/** 插件定义 */
+/** 插件定义 (与后端 PluginInfoDto 对应) */
 export interface PluginDefinition {
   id: string;
   name: string;
-  version: string;
   description: string;
-  adapterType: "builtin" | "generic_http";
+  adapter_type: string;
+  config_schema: ConfigField[];
+}
+
+/** 插件配置字段 */
+export interface ConfigField {
+  key: string;
+  field_type: string;
+  label: string;
+  required: boolean;
+  secret: boolean;
+  default?: unknown;
 }
 
 /** 支持的语言 */

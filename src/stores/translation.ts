@@ -32,16 +32,8 @@ export const useTranslationStore = defineStore("translation", () => {
     }
 
     try {
-      const result = await translate(input, sourceLang.value, targetLang.value);
-      results.value = [
-        {
-          source_text: input,
-          translated_text: result,
-          source_lang: sourceLang.value,
-          target_lang: targetLang.value,
-          provider: "Google Translate",
-        },
-      ];
+      const data = await translate(input, sourceLang.value, targetLang.value);
+      results.value = data;
     } catch (e) {
       results.value = [
         {
@@ -49,7 +41,7 @@ export const useTranslationStore = defineStore("translation", () => {
           translated_text: "",
           source_lang: sourceLang.value,
           target_lang: targetLang.value,
-          provider: "Google Translate",
+          provider: "Transight",
           error: `翻译失败: ${e}`,
         },
       ];
