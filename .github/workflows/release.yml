@@ -13,20 +13,16 @@ jobs:
         include:
           - os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
-            artifact: transight_linux_amd64
-            bundle: deb
+            bundle: deb,rpm
           - os: macos-latest
             target: x86_64-apple-darwin
-            artifact: transight_macos_x64
             bundle: dmg
           - os: macos-latest
             target: aarch64-apple-darwin
-            artifact: transight_macos_arm64
             bundle: dmg
           - os: windows-latest
             target: x86_64-pc-windows-msvc
-            artifact: transight_windows_x64
-            bundle: msi
+            bundle: msi,nsis
 
     runs-on: ${{ matrix.os }}
     steps:
@@ -63,9 +59,3 @@ jobs:
           releaseName: ${{ github.ref_name }}
           releaseDraft: true
 
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.artifact }}
-          path: src-tauri/target/${{ matrix.target }}/release/bundle/
-          if-no-files-found: ignore

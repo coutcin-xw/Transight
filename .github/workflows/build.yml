@@ -1,4 +1,4 @@
-name: Build
+name: Build (verify)
 
 on:
   push:
@@ -15,20 +15,12 @@ jobs:
         include:
           - os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
-            artifact: transight_linux_amd64
-            ext: ""
           - os: macos-latest
             target: x86_64-apple-darwin
-            artifact: transight_macos_x64
-            ext: ""
           - os: macos-latest
             target: aarch64-apple-darwin
-            artifact: transight_macos_arm64
-            ext: ""
           - os: windows-latest
             target: x86_64-pc-windows-msvc
-            artifact: transight_windows_x64
-            ext: .exe
 
     runs-on: ${{ matrix.os }}
     steps:
@@ -53,19 +45,9 @@ jobs:
       - name: Install npm Dependencies
         run: npm ci
 
-      - name: Build Frontend
+      - name: Build Frontend (type-check)
         run: npm run build
 
-      - name: Build Tauri
-        uses: tauri-apps/tauri-action@v0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          args: --target ${{ matrix.target }}
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.artifact }}
-          path: src-tauri/target/${{ matrix.target }}/release/bundle/
-          if-no-files-found: error
+      - name: Build Rust (verify)
+        run: cargo build --target ${{ matrix.target }} --release
+        working-directory: src-tauri
