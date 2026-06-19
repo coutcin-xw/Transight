@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getCurrentWindow } from "@tauri-apps/api/window";
-import type { ResizeDirection } from "@tauri-apps/api/window";
+import type { ResizeDirection } from "../types";
 
 function onResizeMouseDown(dir: ResizeDirection) {
   getCurrentWindow()

@@ -1,5 +1,20 @@
 // Tauri API 类型定义
 
+/**
+ * 窗口 resize 拖拽方向。
+ * 来源: @tauri-apps/api/window.d.ts:72（上游未 export，故在此声明）。
+ * 上游导出后删除此声明即可。
+ */
+export type ResizeDirection =
+  | 'East'
+  | 'North'
+  | 'NorthEast'
+  | 'NorthWest'
+  | 'South'
+  | 'SouthEast'
+  | 'SouthWest'
+  | 'West';
+
 /** 翻译结果 */
 export interface TranslationResult {
   source_text: string;
