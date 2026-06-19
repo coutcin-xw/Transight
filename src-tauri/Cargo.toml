@@ -1,6 +1,6 @@
 [package]
 name = "transight"
-version = "0.1.0"
+version = "0.1.1"
 description = "跨平台划词翻译工具"
 authors = ["CoutCin"]
 edition = "2024"
