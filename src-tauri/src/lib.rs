@@ -22,7 +22,6 @@ pub fn run() {
             commands::window::hide_translate_window,
             commands::window::open_settings_window,
             commands::window::close_settings_window,
-            commands::window::set_pin_window,
             commands::translate::translate,
             commands::translate::detect_language,
             commands::selection::get_selected_text,
@@ -37,7 +36,7 @@ pub fn run() {
             .title("Transight")
             .inner_size(300.0, 540.0)
             .decorations(false)
-            .always_on_top(false)
+            .always_on_top(true)
             .visible(false)
             .skip_taskbar(true)
             .shadow(true)

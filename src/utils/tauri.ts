@@ -38,8 +38,3 @@ export async function detectLanguage(text: string): Promise<string> {
 export async function getSelectedText(): Promise<string> {
   return invoke("get_selected_text");
 }
-
-/** 切换翻译窗口置顶 */
-export async function setPinWindow(pinned: boolean): Promise<void> {
-  return invoke("set_pin_window", { pinned });
-}

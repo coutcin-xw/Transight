@@ -16,11 +16,11 @@ const emit = defineEmits<{
 
 <template>
   <div class="title-bar">
-    <div class="title-left" data-tauri-drag-region>
+    <div class="title-left">
       <div class="title-icon" />
       <span class="title-text">{{ title }}</span>
     </div>
-    <div class="title-controls" data-tauri-drag-region="false">
+    <div class="title-controls">
       <button
         v-if="showPin"
         class="ctrl-btn pin-btn"
@@ -74,9 +74,6 @@ const emit = defineEmits<{
   display: flex;
   align-items: center;
   gap: 10px;
-  flex: 1;
-  height: 100%;
-  -webkit-app-region: drag;
 }
 
 .title-icon {

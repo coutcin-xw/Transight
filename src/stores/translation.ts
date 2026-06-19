@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import type { TranslationResult } from "../types";
-import { translate, detectLanguage, setPinWindow } from "../utils/tauri";
+import { translate, detectLanguage } from "../utils/tauri";
 
 export const useTranslationStore = defineStore("translation", () => {
   // 状态
@@ -80,15 +80,8 @@ export const useTranslationStore = defineStore("translation", () => {
     sourceText.value = "";
   }
 
-  async function togglePin() {
+  function togglePin() {
     isPinned.value = !isPinned.value;
-    try {
-      await setPinWindow(isPinned.value);
-      console.log(`[transight] pin: ${isPinned.value}`);
-    } catch (e) {
-      console.error(`[transight] set_pin_window failed: ${e}`);
-      isPinned.value = !isPinned.value; // 回退
-    }
   }
 
   return {
