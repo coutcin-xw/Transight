@@ -131,6 +131,8 @@ pub fn run() {
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_global_shortcut::Builder::new().build())
         .plugin(tauri_plugin_clipboard_manager::init())
+        .plugin(tauri_plugin_dialog::init())
+        .plugin(tauri_plugin_fs::init())
         .manage(is_pinned.clone())
         .manage(config_store.clone())
         .manage(plugin_registry.clone())
@@ -140,6 +142,7 @@ pub fn run() {
             commands::window::open_settings_window,
             commands::window::close_settings_window,
             commands::window::set_pin_window,
+            commands::window::broadcast_theme,
             commands::translate::translate,
             commands::translate::detect_language,
             commands::translate::list_plugins,
@@ -289,7 +292,7 @@ pub fn run() {
                                 Ok(text) if !text.is_empty() => {
                                     eprintln!(
                                         "[transight] selected: {}",
-                                        &text[..text.len().min(50)]
+                                        &text.chars().take(50).collect::<String>()
                                     );
                                     let _ = h.emit("selected-text", text);
                                 }

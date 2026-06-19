@@ -47,9 +47,14 @@ pub async fn set_pin_window(
     state: State<'_, Arc<AtomicBool>>,
     pinned: bool,
 ) -> Result<(), String> {
-    // 启用 pin 时，窗口不自动隐藏（由失焦事件处理器检查此状态）
     state.store(pinned, Ordering::Relaxed);
-    // 通知所有窗口 pin 状态变化
     let _ = app.emit("pin-changed", pinned);
+    Ok(())
+}
+
+/// 广播主题变更到所有窗口
+#[tauri::command]
+pub async fn broadcast_theme(app: tauri::AppHandle, theme: String) -> Result<(), String> {
+    let _ = app.emit("theme-changed", theme);
     Ok(())
 }

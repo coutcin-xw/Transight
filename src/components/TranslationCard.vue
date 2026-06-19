@@ -97,7 +97,7 @@ function renderMd(text: string): string {
   display: flex;
   flex-direction: column;
   gap: 0;
-  background: #ffffff;
+  background: var(--color-card-bg);
   border: 1px solid var(--color-border);
   border-radius: 8px;
   width: 100%;
@@ -116,7 +116,7 @@ function renderMd(text: string): string {
 }
 
 .card-header:hover {
-  background: #f9fafb;
+  background: var(--color-bg-secondary);
 }
 
 .provider-info {
@@ -139,13 +139,13 @@ function renderMd(text: string): string {
 }
 
 .icon-loading {
-  background: #fef3c7;
+  background: var(--color-border);
   animation: pulse 1.5s ease-in-out infinite;
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
 }
 
 .provider-name {
@@ -171,9 +171,9 @@ function renderMd(text: string): string {
   width: 26px; height: 22px;
   border: 1px solid var(--color-border);
   border-radius: 4px;
-  background: #f9fafb;
+  background: var(--color-bg-secondary);
   cursor: pointer;
-  color: #9ca3af;
+  color: var(--color-text-placeholder);
   font-size: 10px;
   font-weight: 700;
   transition: all 0.15s;
@@ -194,9 +194,9 @@ function renderMd(text: string): string {
   height: 22px;
   border: 1px solid var(--color-border);
   border-radius: 4px;
-  background: #f9fafb;
+  background: var(--color-bg-secondary);
   cursor: pointer;
-  color: #6b7280;
+  color: var(--color-text-muted);
   transition: all 0.15s;
 }
 
@@ -224,7 +224,7 @@ function renderMd(text: string): string {
 .card-text {
   font-size: 13px;
   line-height: 1.5;
-  color: #111827;
+  color: var(--color-text-primary);
   word-break: break-word;
   max-height: 120px;
   overflow-y: auto;
@@ -236,21 +236,20 @@ function renderMd(text: string): string {
 }
 
 .card-text::-webkit-scrollbar-thumb {
-  background: #e5e7eb;
-  border-radius: 2px;
+  background: var(--color-border); border-radius: 2px;
 }
 
 /* markdown 渲染 */
 .markdown-body :deep(p) { margin: 0 0 4px; }
 .markdown-body :deep(p:last-child) { margin-bottom: 0; }
 .markdown-body :deep(code) {
-  background: #f3f4f6;
+  background: var(--color-bg-secondary);
   padding: 1px 4px;
   border-radius: 3px;
   font-size: 11px;
 }
 .markdown-body :deep(pre) {
-  background: #f3f4f6;
+  background: var(--color-bg-secondary);
   padding: 6px 8px;
   border-radius: 4px;
   overflow-x: auto;
@@ -277,8 +276,8 @@ function renderMd(text: string): string {
 .loading-badge {
   font-size: 10px;
   font-weight: 500;
-  color: #92400e;
-  background: #fef3c7;
+  color: var(--color-text-muted);
+  background: var(--color-bg-secondary);
   padding: 0 6px;
   border-radius: 4px;
 }
@@ -291,10 +290,10 @@ function renderMd(text: string): string {
 }
 
 .loading-dot {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
-  background: #d1d5db;
+  background: var(--color-border);
   animation: dotPulse 1.4s ease-in-out infinite;
 }
 
@@ -302,8 +301,8 @@ function renderMd(text: string): string {
 .loading-dot:nth-child(3) { animation-delay: 0.4s; }
 
 @keyframes dotPulse {
-  0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); }
-  40% { opacity: 1; transform: scale(1); }
+  0%, 80%, 100% { opacity: 0.3; }
+  40% { opacity: 0.7; }
 }
 
 .error-badge {
@@ -320,7 +319,8 @@ function renderMd(text: string): string {
 }
 
 .card-loading {
-  border-color: #fde68a;
+  border-color: var(--color-border);
+  opacity: 0.8;
 }
 
 .card-error-text {
@@ -338,8 +338,8 @@ function renderMd(text: string): string {
 
 .lang-tag {
   font-size: 10px;
-  color: #9ca3af;
-  background: #f3f4f6;
+  color: var(--color-text-placeholder);
+  background: var(--color-bg-secondary);
   padding: 1px 6px;
   border-radius: 4px;
 }

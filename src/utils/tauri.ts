@@ -45,6 +45,11 @@ export async function setPinWindow(pinned: boolean): Promise<void> {
   return invoke("set_pin_window", { pinned });
 }
 
+/** 广播主题变更 */
+export async function broadcastTheme(theme: string): Promise<void> {
+  return invoke("broadcast_theme", { theme });
+}
+
 // ─── 插件/服务管理 ──────────────────────────────────────────────────────────
 
 /** 列出所有已注册的翻译插件 */
@@ -85,6 +90,9 @@ export async function getConfig(): Promise<Record<string, unknown>> {
 }
 
 /** 更新全局配置 */
-export async function updateConfig(general: Record<string, unknown>): Promise<void> {
-  return invoke("update_config", { general });
+export async function updateConfig(
+  general?: Record<string, unknown>,
+  shortcuts?: Record<string, string>,
+): Promise<void> {
+  return invoke("update_config", { general: general || null, shortcuts: shortcuts || null });
 }

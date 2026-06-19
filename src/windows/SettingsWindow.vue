@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { closeSettingsWindow } from "../utils/tauri";
 import { LANGUAGES } from "../types";
@@ -14,7 +14,13 @@ const defaultSourceLang = ref("auto");
 const defaultTargetLang = ref("zh");
 const autoCopyResult = ref(false);
 const defaultPin = ref(false);
+const theme = ref("auto");
 const loading = ref(true);
+
+// 快捷键
+const shortcutTranslate = ref("Ctrl+Alt+Q");
+const shortcutClose = ref("Escape");
+const recording = ref<string | null>(null);
 
 onMounted(async () => {
   try {
@@ -26,6 +32,12 @@ onMounted(async () => {
       defaultTargetLang.value = (general.default_target_lang as string) || "zh";
       autoCopyResult.value = (general.auto_copy_result as boolean) || false;
       defaultPin.value = (general.default_pin as boolean) || false;
+      theme.value = (general.theme as string) || "auto";
+    }
+    const shortcuts = config.shortcuts as Record<string, string> | undefined;
+    if (shortcuts) {
+      shortcutTranslate.value = shortcuts.translate_selected || "Ctrl+Alt+Q";
+      shortcutClose.value = shortcuts.close_window || "Escape";
     }
   } catch (e) {
     console.error("加载配置失败:", e);
@@ -41,12 +53,111 @@ async function saveGeneral() {
     default_target_lang: defaultTargetLang.value,
     auto_copy_result: autoCopyResult.value,
     default_pin: defaultPin.value,
+    theme: theme.value,
   });
+}
+
+async function setTheme(t: string) {
+  theme.value = t;
+  await saveGeneral();
+  const resolved = t === "auto"
+    ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+    : t;
+  document.documentElement.setAttribute("data-theme", resolved);
+  try {
+    const { broadcastTheme } = await import("../utils/tauri");
+    await broadcastTheme(resolved);
+  } catch { /* ignore */ }
+}
+
+function startRecord(key: string) {
+  recording.value = key;
+  window.addEventListener("keydown", onRecordKeydown, { once: false });
+}
+
+function onRecordKeydown(e: KeyboardEvent) {
+  if (!recording.value) return;
+  e.preventDefault();
+  e.stopPropagation();
+  const parts: string[] = [];
+  if (e.ctrlKey) parts.push("Ctrl");
+  if (e.altKey) parts.push("Alt");
+  if (e.shiftKey) parts.push("Shift");
+  if (e.metaKey) parts.push("Meta");
+  const isMod = e.key === "Control" || e.key === "Alt" || e.key === "Shift" || e.key === "Meta";
+  if (!isMod && e.key.length > 0) {
+    parts.push(e.key.length === 1 ? e.key.toUpperCase() : e.key);
+  }
+  if (parts.length >= 2 && !isMod) {
+    const combo = parts.join("+");
+    if (recording.value === "translate") shortcutTranslate.value = combo;
+    else if (recording.value === "close") shortcutClose.value = combo;
+    recording.value = null;
+    window.removeEventListener("keydown", onRecordKeydown);
+    saveShortcuts();
+  }
+}
+
+async function saveShortcuts() {
+  const { updateConfig } = await import("../utils/tauri");
+  await updateConfig(undefined, {
+    translate_selected: shortcutTranslate.value,
+    close_window: shortcutClose.value,
+  });
+}
+
+async function exportConfig() {
+  const { getConfig } = await import("../utils/tauri");
+  const config = await getConfig();
+  const json = JSON.stringify(config, null, 2);
+  // 用 Tauri dialog 选择保存路径
+  try {
+    const { save } = await import("@tauri-apps/plugin-dialog");
+    const path = await save({
+      filters: [{ name: "JSON", extensions: ["json"] }],
+      defaultPath: "transight-config.json",
+    });
+    if (path) {
+      const { writeTextFile } = await import("@tauri-apps/plugin-fs");
+      await writeTextFile(path, json);
+    }
+  } catch {
+    // 降级：下载到默认位置
+    const blob = new Blob([json], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = "transight-config.json"; a.click();
+    URL.revokeObjectURL(url);
+  }
+}
+
+async function importConfig() {
+  try {
+    const { open } = await import("@tauri-apps/plugin-dialog");
+    const path = await open({
+      filters: [{ name: "JSON", extensions: ["json"] }],
+      multiple: false,
+    });
+    if (path) {
+      const { readTextFile } = await import("@tauri-apps/plugin-fs");
+      const content = await readTextFile(path as string);
+      const config = JSON.parse(content);
+      const { updateConfig } = await import("../utils/tauri");
+      await updateConfig(config.general);
+      location.reload();
+    }
+  } catch (e) {
+    console.error("导入失败:", e);
+  }
 }
 
 function onTitleMouseDown() {
   getCurrentWindow().startDragging();
 }
+
+onUnmounted(() => {
+  window.removeEventListener("keydown", onRecordKeydown);
+});
 </script>
 
 <template>
@@ -150,6 +261,27 @@ function onTitleMouseDown() {
                 <span class="toggle-slider" />
               </label>
             </div>
+            <div class="setting-item">
+              <div class="setting-info">
+                <span class="setting-label">主题</span>
+                <span class="setting-desc">浅色 / 深色 / 跟随系统</span>
+              </div>
+              <div class="theme-btns">
+                <button :class="{ active: theme === 'light' }" @click="setTheme('light')">浅</button>
+                <button :class="{ active: theme === 'dark' }" @click="setTheme('dark')">深</button>
+                <button :class="{ active: theme === 'auto' }" @click="setTheme('auto')">自动</button>
+              </div>
+            </div>
+            <div class="setting-item">
+              <div class="setting-info">
+                <span class="setting-label">导入 / 导出配置</span>
+                <span class="setting-desc">备份或恢复全部配置</span>
+              </div>
+              <div class="btn-group">
+                <button class="btn-sm" @click="exportConfig">导出</button>
+                <button class="btn-sm" @click="importConfig">导入</button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -161,21 +293,27 @@ function onTitleMouseDown() {
 
         <!-- 快捷键 -->
         <div v-if="activeTab === 'shortcut'" class="tab-content">
-          <h2>快捷键</h2>
+          <h2>快捷键 <span class="hint">点击输入框后按键录制</span></h2>
           <div class="settings-list">
             <div class="setting-item">
               <div class="setting-info">
                 <span class="setting-label">翻译选中文本</span>
                 <span class="setting-desc">全局快捷键</span>
               </div>
-              <kbd>Ctrl+Alt+Q</kbd>
+              <kbd
+                :class="{ recording: recording === 'translate' }"
+                @click.stop="startRecord('translate')"
+              >{{ recording === 'translate' ? '按下组合键...' : shortcutTranslate }}</kbd>
             </div>
             <div class="setting-item">
               <div class="setting-info">
                 <span class="setting-label">关闭翻译窗口</span>
                 <span class="setting-desc">翻译弹窗内</span>
               </div>
-              <kbd>Escape</kbd>
+              <kbd
+                :class="{ recording: recording === 'close' }"
+                @click.stop="startRecord('close')"
+              >{{ recording === 'close' ? '按下组合键...' : shortcutClose }}</kbd>
             </div>
           </div>
         </div>
@@ -189,9 +327,9 @@ function onTitleMouseDown() {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background: #ffffff;
+  background: var(--color-card-bg);
   border-radius: 12px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--color-border);
   overflow: hidden;
 }
 
@@ -202,8 +340,8 @@ function onTitleMouseDown() {
   justify-content: space-between;
   height: 44px;
   padding: 0 16px;
-  background: #f9fafb;
-  border-bottom: 1px solid #e5e7eb;
+  background: var(--color-bg-secondary);
+  border-bottom: 1px solid var(--color-border);
   border-radius: 12px 12px 0 0;
   flex-shrink: 0;
 }
@@ -227,7 +365,7 @@ function onTitleMouseDown() {
 .title-text {
   font-size: 14px;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--color-text-primary);
 }
 
 .close-btn {
@@ -251,8 +389,8 @@ function onTitleMouseDown() {
 /* 侧边栏 */
 .sidebar {
   width: 180px;
-  background: #f9fafb;
-  border-right: 1px solid #e5e7eb;
+  background: var(--color-bg-secondary);
+  border-right: 1px solid var(--color-border);
   padding: 12px 16px;
   display: flex;
   flex-direction: column;
@@ -273,10 +411,10 @@ function onTitleMouseDown() {
   transition: all 0.15s;
 }
 
-.nav-item:hover { background: #f3f4f6; }
+.nav-item:hover { background: var(--color-bg-secondary); }
 .nav-item.active {
-  background: #ffffff;
-  color: #1f2937;
+  background: var(--color-card-bg);
+  color: var(--color-text-primary);
   font-weight: 500;
   box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
@@ -291,7 +429,7 @@ function onTitleMouseDown() {
 .tab-content h2 {
   font-size: 18px;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--color-text-primary);
   margin-bottom: 24px;
 }
 
@@ -307,8 +445,8 @@ function onTitleMouseDown() {
   align-items: center;
   justify-content: space-between;
   padding: 14px 16px;
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   gap: 16px;
 }
@@ -322,12 +460,12 @@ function onTitleMouseDown() {
 .setting-label {
   font-size: 13px;
   font-weight: 500;
-  color: #374151;
+  color: var(--color-text-secondary);
 }
 
 .setting-desc {
   font-size: 11px;
-  color: #6b7280;
+  color: var(--color-text-muted);
 }
 
 /* 开关 */
@@ -353,7 +491,7 @@ function onTitleMouseDown() {
   position: absolute;
   top: 2px; left: 2px;
   width: 18px; height: 18px;
-  background: #fff;
+  background: var(--color-card-bg);
   border-radius: 50%;
   transition: transform 0.2s;
 }
@@ -368,24 +506,70 @@ function onTitleMouseDown() {
   align-items: center;
   gap: 6px;
   padding: 6px 10px;
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
   border-radius: 6px;
   font-size: 12px;
-  color: #374151;
+  color: var(--color-text-secondary);
   cursor: pointer;
   flex-shrink: 0;
 }
 
 kbd {
-  padding: 4px 8px;
-  background: #f3f4f6;
+  padding: 4px 10px;
+  background: var(--color-bg-secondary);
   border: 1px solid #d1d5db;
   border-radius: 4px;
   font-size: 11px;
   font-family: monospace;
-  color: #374151;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  min-width: 100px;
+  text-align: center;
+  transition: all 0.15s;
 }
+
+kbd:hover { border-color: var(--color-accent); }
+
+kbd.recording {
+  border-color: var(--color-accent);
+  background: var(--color-accent-light);
+  color: var(--color-accent);
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.hint { font-size: 11px; color: var(--color-text-placeholder); font-weight: 400; margin-left: 8px; }
+
+/* 主题按钮 */
+.theme-btns { display: flex; gap: 4px; }
+.theme-btns button {
+  width: 36px; height: 28px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-bg-secondary);
+  font-size: 12px; cursor: pointer;
+  color: var(--color-text-secondary);
+}
+.theme-btns button.active {
+  background: var(--color-accent); color: #fff; border-color: var(--color-accent);
+}
+
+/* 导入导出 */
+.btn-group { display: flex; gap: 8px; }
+.btn-sm {
+  padding: 6px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-card-bg);
+  font-size: 12px; cursor: pointer;
+  color: var(--color-text-secondary);
+}
+.btn-sm:hover { background: var(--color-bg-secondary); }
 
 .dropdown-menu {
   position: absolute;
@@ -395,8 +579,8 @@ kbd {
   min-width: 100px;
   max-height: 180px;
   overflow-y: auto;
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
   border-radius: 6px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   z-index: 100;
@@ -408,9 +592,9 @@ kbd {
   cursor: pointer;
 }
 
-.dropdown-item:hover { background: #f3f4f6; }
+.dropdown-item:hover { background: var(--color-bg-secondary); }
 .dropdown-item.selected { background: #dbeafe; color: #3b82f6; font-weight: 600; }
 
 .content::-webkit-scrollbar { width: 4px; }
-.content::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 2px; }
+.content::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 2px; }
 </style>

@@ -124,8 +124,8 @@ function onTitleMouseDown() {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  color: #6b7280;
-  background: #f3f4f6;
+  color: var(--color-text-muted);
+  background: var(--color-bg-secondary);
   transition: background 0.15s;
 }
 

@@ -175,7 +175,7 @@ document.addEventListener("keydown", onKeydown);
   height: 100vh;
   padding: 10px 14px 14px;
   gap: 8px;
-  background: #ffffff;
+  background: var(--color-card-bg);
   border-radius: 12px;
   border: 1px solid var(--color-border);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
@@ -223,9 +223,9 @@ document.addEventListener("keydown", onKeydown);
   height: 26px;
   border: 1px solid var(--color-border);
   border-radius: 6px;
-  background: #f3f4f6;
+  background: var(--color-bg-secondary);
   cursor: pointer;
-  color: #6b7280;
+  color: var(--color-text-muted);
   flex-shrink: 0;
   transition: all 0.15s;
 }
@@ -278,7 +278,7 @@ document.addEventListener("keydown", onKeydown);
   min-width: 120px;
   max-height: 200px;
   overflow-y: auto;
-  background: #ffffff;
+  background: var(--color-card-bg);
   border: 1px solid var(--color-border);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -295,7 +295,7 @@ document.addEventListener("keydown", onKeydown);
 }
 
 .dropdown-item:hover {
-  background: #f3f4f6;
+  background: var(--color-bg-secondary);
 }
 
 .dropdown-item.selected {
@@ -309,8 +309,7 @@ document.addEventListener("keydown", onKeydown);
 }
 
 .dropdown-menu::-webkit-scrollbar-thumb {
-  background: #e5e7eb;
-  border-radius: 2px;
+  background: var(--color-border); border-radius: 2px;
 }
 
 /* 输入区域 */
@@ -387,8 +386,7 @@ document.addEventListener("keydown", onKeydown);
 }
 
 .results-list::-webkit-scrollbar-thumb {
-  background: #e5e7eb;
-  border-radius: 2px;
+  background: var(--color-border); border-radius: 2px;
 }
 
 .empty-state {

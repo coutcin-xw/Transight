@@ -246,11 +246,17 @@ pub async fn get_config(
 pub async fn update_config(
     store: State<'_, ConfigStore>,
     general: Option<serde_json::Value>,
+    shortcuts: Option<serde_json::Value>,
 ) -> Result<(), String> {
     let mut config = store.write().map_err(|e| format!("{e}"))?;
     if let Some(g) = general {
         if let Ok(general_cfg) = serde_json::from_value(g) {
             config.general = general_cfg;
+        }
+    }
+    if let Some(s) = shortcuts {
+        if let Ok(shortcut_cfg) = serde_json::from_value(s) {
+            config.shortcuts = shortcut_cfg;
         }
     }
     save(&config)?;

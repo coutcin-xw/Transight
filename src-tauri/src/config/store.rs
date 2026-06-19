@@ -38,11 +38,15 @@ pub struct GeneralConfig {
     /// 翻译窗口默认是否固定 (pin)
     #[serde(default)]
     pub default_pin: bool,
+    /// 主题: "light" | "dark" | "auto"
+    #[serde(default = "default_theme")]
+    pub theme: String,
 }
 
 fn default_lang() -> String { "auto".into() }
 fn default_lang_zh() -> String { "zh".into() }
 fn default_true() -> bool { true }
+fn default_theme() -> String { "auto".into() }
 
 /// 翻译服务配置
 #[derive(Debug, Clone, Serialize, Deserialize)]
