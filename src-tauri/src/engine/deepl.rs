@@ -38,23 +38,23 @@ impl Translator for DeepLTranslator {
             .clone()
             .unwrap_or_else(|| "https://api-free.deepl.com/v2/translate".into());
 
-        let sl = if source_lang == "auto" {
-            String::new() // DeepL auto-detects when source_lang is omitted
-        } else {
-            source_lang.to_uppercase()
-        };
         let tl = target_lang.to_uppercase();
+
+        let mut body = serde_json::json!({
+            "text": [text],
+            "target_lang": tl,
+        });
+        // 省略 source_lang 字段触发 DeepL 自动检测
+        if source_lang != "auto" {
+            body["source_lang"] = serde_json::json!(source_lang.to_uppercase());
+        }
 
         let client = reqwest::Client::new();
         let resp = client
             .post(&api_url)
             .header("Authorization", format!("DeepL-Auth-Key {api_key}"))
             .header("Content-Type", "application/json")
-            .json(&serde_json::json!({
-                "text": [text],
-                "source_lang": sl,
-                "target_lang": tl,
-            }))
+            .json(&body)
             .timeout(std::time::Duration::from_secs(config.timeout_secs))
             .send()
             .await

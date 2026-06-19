@@ -1,70 +1,59 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import type { TranslationResult } from "../types";
-import { translate, detectLanguage, setPinWindow } from "../utils/tauri";
+import { translate, setPinWindow } from "../utils/tauri";
+import { listen } from "@tauri-apps/api/event";
 
 export const useTranslationStore = defineStore("translation", () => {
-  // 状态
   const sourceText = ref("");
   const sourceLang = ref("auto");
   const targetLang = ref("zh");
   const results = ref<TranslationResult[]>([]);
-  const isLoading = ref(false);
   const isPinned = ref(false);
+  // 初始化: 注册事件监听 (同步注册, Promise 只用于 cleanup)
+  listen<TranslationResult>("translation-result", (event) => {
+    const r = event.payload;
+    const idx = results.value.findIndex(
+      (item) => item.provider === r.provider,
+    );
+    if (idx >= 0) {
+      results.value[idx] = r;
+    } else {
+      results.value = [...results.value, r];
+    }
+  });
 
-  // 计算属性
   const hasResults = computed(() => results.value.length > 0);
   const resultCount = computed(() => results.value.length);
 
-  // 操作
   async function doTranslate(text?: string) {
     const input = text || sourceText.value;
     if (!input.trim()) return;
 
-    // 打断之前翻译: 清空旧结果, 立即展示占位卡片
-    results.value = [{
-      source_text: input,
-      translated_text: "",
-      source_lang: sourceLang.value,
-      target_lang: targetLang.value,
-      provider: "",
-    }];
-    isLoading.value = true;
-
-    if (sourceLang.value === "auto") {
-      try {
-        sourceLang.value = await detectLanguage(input);
-      } catch {
-        // 检测失败用默认值
-      }
-    }
-
     try {
-      const data = await translate(input, sourceLang.value, targetLang.value);
-      results.value = data;
+      const names = await translate(input, sourceLang.value, targetLang.value);
+      // 根据启用的服务创建占位卡片
+      results.value = names.map((n) => ({
+        source_text: input,
+        translated_text: "",
+        source_lang: sourceLang.value,
+        target_lang: targetLang.value,
+        provider: n.name,
+      }));
     } catch (e) {
-      results.value = [
-        {
-          source_text: input,
-          translated_text: "",
-          source_lang: sourceLang.value,
-          target_lang: targetLang.value,
-          provider: "Transight",
-          error: `翻译失败: ${e}`,
-        },
-      ];
-    } finally {
-      isLoading.value = false;
+      results.value = [{
+        source_text: input,
+        translated_text: "",
+        source_lang: sourceLang.value,
+        target_lang: targetLang.value,
+        provider: "Transight",
+        error: `翻译失败: ${e}`,
+      }];
     }
   }
 
-  function setSourceLang(lang: string) {
-    sourceLang.value = lang;
-  }
-
-  function setTargetLang(lang: string) {
-    targetLang.value = lang;
-  }
+  function setSourceLang(lang: string) { sourceLang.value = lang; }
+  function setTargetLang(lang: string) { targetLang.value = lang; }
 
   function swapLanguages() {
     if (sourceLang.value === "auto") return;
@@ -78,9 +67,7 @@ export const useTranslationStore = defineStore("translation", () => {
     sourceText.value = "";
   }
 
-  function setPinned(pinned: boolean) {
-    isPinned.value = pinned;
-  }
+  function setPinned(pinned: boolean) { isPinned.value = pinned; }
 
   async function togglePin() {
     isPinned.value = !isPinned.value;
@@ -93,20 +80,9 @@ export const useTranslationStore = defineStore("translation", () => {
   }
 
   return {
-    sourceText,
-    sourceLang,
-    targetLang,
-    results,
-    isLoading,
-    isPinned,
-    hasResults,
-    resultCount,
-    doTranslate,
-    setSourceLang,
-    setTargetLang,
-    swapLanguages,
-    clearResults,
-    setPinned,
-    togglePin,
+    sourceText, sourceLang, targetLang, results, isPinned,
+    hasResults, resultCount,
+    doTranslate, setSourceLang, setTargetLang, swapLanguages,
+    clearResults, setPinned, togglePin,
   };
 });

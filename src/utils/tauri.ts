@@ -1,5 +1,5 @@
 import { invoke } from "@tauri-apps/api/core";
-import type { TranslationResult, PluginDefinition, ServiceConfig } from "../types";
+import type { PluginDefinition, ServiceConfig } from "../types";
 
 /** 显示翻译弹窗 */
 export async function showTranslateWindow(): Promise<void> {
@@ -21,12 +21,12 @@ export async function closeSettingsWindow(): Promise<void> {
   return invoke("close_settings_window");
 }
 
-/** 执行翻译 — 返回多个翻译源的结果 */
+/** 触发翻译 — 返回启用的服务名列表, 各源结果通过 translation-result 事件推送 */
 export async function translate(
   text: string,
   sourceLang: string,
   targetLang: string,
-): Promise<TranslationResult[]> {
+): Promise<{ plugin_id: string; name: string }[]> {
   return invoke("translate", { text, sourceLang, targetLang });
 }
 

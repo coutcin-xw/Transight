@@ -5,15 +5,16 @@ use serde::Serialize;
 use std::sync::Arc;
 use tauri::State;
 
-/// 执行翻译 — 从 ConfigStore 读取启用的服务，通过 PluginRegistry 并行翻译
+/// 执行翻译 — 每个翻译源完成后通过事件推送给前端
 #[tauri::command]
 pub async fn translate(
     text: String,
     source_lang: String,
     target_lang: String,
+    app: tauri::AppHandle,
     store: State<'_, ConfigStore>,
     registry: State<'_, Arc<PluginRegistry>>,
-) -> Result<Vec<TranslationResultDto>, String> {
+) -> Result<Vec<ServiceNameDto>, String> {
     let services = {
         let config = store.read().map_err(|e| format!("读取配置失败: {e}"))?;
         config.services.clone()
@@ -26,11 +27,25 @@ pub async fn translate(
         return Err("没有启用的翻译服务".into());
     }
 
-    let results = registry
-        .translate_all(&text, &source_lang, &target_lang, &enabled)
-        .await;
+    // 返回启用的服务名列表 (前端据此创建占位卡片)
+    let names: Vec<ServiceNameDto> = enabled
+        .iter()
+        .map(|s| ServiceNameDto {
+            plugin_id: s.plugin_id.clone(),
+            name: s.name.clone(),
+        })
+        .collect();
 
-    Ok(results.into_iter().map(Into::into).collect())
+    // 并行翻译, 每个源完成后 emit translation-result 事件
+    registry.translate_all_with_events(&text, &source_lang, &target_lang, &enabled, app);
+
+    Ok(names)
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct ServiceNameDto {
+    pub plugin_id: String,
+    pub name: String,
 }
 
 /// 自动检测文本语言

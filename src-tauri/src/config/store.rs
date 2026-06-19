@@ -80,6 +80,26 @@ impl Default for Config {
                     enabled: true,
                     config: serde_json::json!({}),
                 },
+                ServiceConfig {
+                    id: "svc-deepl".into(),
+                    plugin_id: "deepl".into(),
+                    name: "DeepL".into(),
+                    enabled: false,
+                    config: serde_json::json!({
+                        "api_key": ""
+                    }),
+                },
+                ServiceConfig {
+                    id: "svc-llm".into(),
+                    plugin_id: "openai-compat".into(),
+                    name: "LLM 翻译".into(),
+                    enabled: false,
+                    config: serde_json::json!({
+                        "api_url": "https://api.openai.com/v1/chat/completions",
+                        "api_key": "",
+                        "model": "gpt-4o-mini"
+                    }),
+                },
             ],
             shortcuts: ShortcutConfig::default(),
         }

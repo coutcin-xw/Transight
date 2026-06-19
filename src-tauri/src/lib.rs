@@ -50,16 +50,26 @@ pub fn run() {
             PluginInfo {
                 id: "deepl".into(),
                 name: "DeepL".into(),
-                description: "DeepL 翻译 REST API".into(),
+                description: "DeepL 翻译 REST API (pro 版需 api.deepl.com)".into(),
                 adapter_type: AdapterType::Builtin,
-                config_schema: vec![ConfigField {
-                    key: "api_key".into(),
-                    field_type: "string".into(),
-                    label: "API Key".into(),
-                    required: true,
-                    secret: true,
-                    default: None,
-                }],
+                config_schema: vec![
+                    ConfigField {
+                        key: "api_key".into(),
+                        field_type: "string".into(),
+                        label: "API Key".into(),
+                        required: true,
+                        secret: true,
+                        default: None,
+                    },
+                    ConfigField {
+                        key: "api_url".into(),
+                        field_type: "string".into(),
+                        label: "API 地址".into(),
+                        required: false,
+                        secret: false,
+                        default: Some(serde_json::json!("https://api.deepl.com/v2/translate")),
+                    },
+                ],
             },
         );
 

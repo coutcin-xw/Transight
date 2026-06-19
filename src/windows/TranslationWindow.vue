@@ -85,9 +85,18 @@ document.addEventListener("keydown", onKeydown);
     <!-- 语言选择器 -->
     <div class="language-selector">
       <!-- 源语言 -->
-      <div class="lang-dropdown" @click="showSourceDropdown = !showSourceDropdown">
+      <div class="lang-dropdown" @click="showSourceDropdown = !showSourceDropdown; showTargetDropdown = false">
         <span class="lang-value">{{ LANGUAGES[store.sourceLang] || store.sourceLang }}</span>
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        <div v-if="showSourceDropdown" class="dropdown-menu">
+          <div
+            v-for="(label, code) in LANGUAGES"
+            :key="code"
+            class="dropdown-item"
+            :class="{ selected: store.sourceLang === code }"
+            @click.stop="store.setSourceLang(code); showSourceDropdown = false"
+          >{{ label }}</div>
+        </div>
       </div>
 
       <!-- 交换按钮 (左右交换图标) -->
@@ -101,9 +110,18 @@ document.addEventListener("keydown", onKeydown);
       </button>
 
       <!-- 目标语言 -->
-      <div class="lang-dropdown" @click="showTargetDropdown = !showTargetDropdown">
+      <div class="lang-dropdown" @click="showTargetDropdown = !showTargetDropdown; showSourceDropdown = false">
         <span class="lang-value">{{ LANGUAGES[store.targetLang] || store.targetLang }}</span>
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        <div v-if="showTargetDropdown" class="dropdown-menu">
+          <div
+            v-for="(label, code) in LANGUAGES"
+            :key="code"
+            class="dropdown-item"
+            :class="{ selected: store.targetLang === code }"
+            @click.stop="store.setTargetLang(code); showTargetDropdown = false"
+          >{{ label }}</div>
+        </div>
       </div>
 
       <!-- Go 按钮 (翻译中也可点击，打断并重试) -->
@@ -133,13 +151,13 @@ document.addEventListener("keydown", onKeydown);
         </span>
       </div>
 
-      <div v-if="store.hasResults || store.isLoading" class="results-list">
+      <div v-if="store.hasResults" class="results-list">
         <TranslationCard
           v-for="(result, idx) in store.results"
-          :key="idx"
+          :key="result.provider || idx"
           :result="result"
           :index="idx"
-          :loading="store.isLoading"
+          :loading="!result.translated_text && !result.error"
           @copy="copyText"
         />
       </div>
@@ -246,6 +264,54 @@ document.addEventListener("keydown", onKeydown);
 .go-btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+}
+
+/* 语言下拉菜单 */
+.lang-dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 4px;
+  min-width: 120px;
+  max-height: 200px;
+  overflow-y: auto;
+  background: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+
+.dropdown-item {
+  padding: 6px 12px;
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.1s;
+}
+
+.dropdown-item:hover {
+  background: #f3f4f6;
+}
+
+.dropdown-item.selected {
+  background: var(--color-accent-light);
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+.dropdown-menu::-webkit-scrollbar {
+  width: 4px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb {
+  background: #e5e7eb;
+  border-radius: 2px;
 }
 
 /* 输入区域 */
