@@ -244,22 +244,38 @@ pub async fn get_config(
 /// 更新全局配置
 #[tauri::command]
 pub async fn update_config(
+    app: tauri::AppHandle,
     store: State<'_, ConfigStore>,
     general: Option<serde_json::Value>,
     shortcuts: Option<serde_json::Value>,
 ) -> Result<(), String> {
-    let mut config = store.write().map_err(|e| format!("{e}"))?;
-    if let Some(g) = general {
-        if let Ok(general_cfg) = serde_json::from_value(g) {
-            config.general = general_cfg;
+    // 在内部块中持有写锁，save 后立即释放，避免与 reregister_shortcuts 内的读锁死锁
+    let shortcuts_changed = {
+        let mut config = store.write().map_err(|e| format!("{e}"))?;
+        if let Some(g) = general {
+            if let Ok(general_cfg) = serde_json::from_value(g) {
+                config.general = general_cfg;
+            }
         }
+        let changed = if let Some(s) = shortcuts {
+            if let Ok(shortcut_cfg) = serde_json::from_value(s) {
+                config.shortcuts = shortcut_cfg;
+                true
+            } else {
+                false
+            }
+        } else {
+            false
+        };
+        save(&config)?;
+        changed
+    }; // ← 写锁在此释放
+
+    // 快捷键变更时重新注册全局快捷键（此时写锁已释放，reregister_shortcuts 可安全获取读锁）
+    if shortcuts_changed {
+        crate::reregister_shortcuts(&app);
     }
-    if let Some(s) = shortcuts {
-        if let Ok(shortcut_cfg) = serde_json::from_value(s) {
-            config.shortcuts = shortcut_cfg;
-        }
-    }
-    save(&config)?;
+
     Ok(())
 }
 

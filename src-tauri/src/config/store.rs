@@ -68,8 +68,40 @@ pub struct ShortcutConfig {
     pub close_window: String,
 }
 
-fn default_translate_shortcut() -> String { "Ctrl+Alt+Q".into() }
+fn default_translate_shortcut() -> String {
+    #[cfg(target_os = "macos")]
+    { "Cmd+Alt+Q".into() }
+    #[cfg(not(target_os = "macos"))]
+    { "Ctrl+Alt+Q".into() }
+}
 fn default_escape() -> String { "Escape".into() }
+
+/// 规范化快捷键字符串，使其能被 global-hotkey 解析器识别
+///
+/// 问题：前端录制快捷键时把 e.metaKey 记为 "Meta"，
+/// 但 global-hotkey 的 parse_hotkey() 只认 Cmd/Command/Super，不认 Meta。
+/// 此函数将 "Meta" 替换为平台对应的修饰符名称：
+/// - macOS → "Cmd"
+/// - Linux/Windows → "Super"
+pub fn normalize_shortcut_for_platform(shortcut: &str) -> String {
+    #[cfg(target_os = "macos")]
+    let meta_replacement = "Cmd";
+    #[cfg(not(target_os = "macos"))]
+    let meta_replacement = "Super";
+
+    shortcut
+        .split('+')
+        .map(|part| {
+            let trimmed = part.trim();
+            if trimmed.eq_ignore_ascii_case("Meta") {
+                meta_replacement
+            } else {
+                trimmed
+            }
+        })
+        .collect::<Vec<&str>>()
+        .join("+")
+}
 
 impl Default for Config {
     fn default() -> Self {

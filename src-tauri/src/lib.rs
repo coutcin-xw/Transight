@@ -23,6 +23,91 @@ const TRANSLATE_HEIGHT: f64 = 540.0;
 const SETTINGS_WIDTH: f64 = 700.0;
 const SETTINGS_HEIGHT: f64 = 540.0;
 
+/// 从配置读取并注册全局快捷键（先注销所有旧快捷键）
+///
+/// 可被 setup 阶段和 update_config 命令调用，确保快捷键与配置文件同步。
+/// 所需状态 (`ConfigStore`, `Arc<AtomicBool>`) 从 Tauri 托管状态中获取。
+pub fn reregister_shortcuts(app: &tauri::AppHandle) {
+    use tauri_plugin_global_shortcut::GlobalShortcutExt;
+
+    let (translate_sc, close_sc) = {
+        let config_store = app.state::<ConfigStore>();
+        let config = match config_store.read() {
+            Ok(c) => c,
+            Err(e) => {
+                eprintln!("[transight] failed to read config for shortcuts: {e}");
+                return;
+            }
+        };
+        (
+            config::store::normalize_shortcut_for_platform(&config.shortcuts.translate_selected),
+            config::store::normalize_shortcut_for_platform(&config.shortcuts.close_window),
+        )
+    };
+
+    // 先注销所有现有快捷键
+    if let Err(e) = app.global_shortcut().unregister_all() {
+        eprintln!("[transight] unregister_all failed: {e}");
+    }
+
+    // 注册翻译快捷键
+    {
+        let handle = app.clone();
+        let pinned = app.state::<Arc<AtomicBool>>().inner().clone();
+        let config_store = app.state::<ConfigStore>().inner().clone();
+        let sc = translate_sc.clone();
+        match app.global_shortcut().on_shortcut(
+            sc.as_str(),
+            move |_app, _sc, _event| {
+                let h = handle.clone();
+                let text_result = crate::selection::get_selected_text();
+                let default_pin = config_store
+                    .read()
+                    .map(|c| c.general.default_pin)
+                    .unwrap_or(false);
+                if let Some(w) = h.get_webview_window(TRANSLATE_WIN) {
+                    let _ = w.set_size(LogicalSize::new(TRANSLATE_WIDTH, TRANSLATE_HEIGHT));
+                    let _ = w.show();
+                    let _ = w.set_focus();
+                    pinned.store(default_pin, Ordering::Relaxed);
+                    let _ = h.emit("pin-changed", default_pin);
+                    match text_result {
+                        Ok(text) if !text.is_empty() => {
+                            eprintln!(
+                                "[transight] selected: {}",
+                                &text.chars().take(50).collect::<String>()
+                            );
+                            let _ = h.emit("selected-text", text);
+                        }
+                        Ok(_) => eprintln!("[transight] selection empty"),
+                        Err(e) => eprintln!("[transight] selection failed: {e}"),
+                    }
+                }
+            },
+        ) {
+            Ok(_) => eprintln!("[transight] registered translate shortcut: {sc}"),
+            Err(e) => eprintln!("[transight] failed to register translate shortcut '{sc}': {e}"),
+        }
+    }
+
+    // 注册关闭窗口快捷键
+    {
+        let handle = app.clone();
+        let sc = close_sc.clone();
+        match app.global_shortcut().on_shortcut(
+            sc.as_str(),
+            move |_app, _sc, _event| {
+                if let Some(w) = handle.get_webview_window(TRANSLATE_WIN) {
+                    let _ = w.hide();
+                }
+            },
+        ) {
+            Ok(_) => eprintln!("[transight] registered close shortcut: {sc}"),
+            Err(e) => eprintln!("[transight] failed to register close shortcut '{sc}': {e}"),
+        }
+    }
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     let is_pinned = Arc::new(AtomicBool::new(false));
@@ -276,55 +361,7 @@ pub fn run() {
                 .build(app)?;
 
             // ── 全局快捷键 ──
-            use tauri_plugin_global_shortcut::GlobalShortcutExt;
-
-            {
-                let handle = app.handle().clone();
-                let pinned_s = pinned.clone();
-                let cfg_s = config_store.clone();
-                let _ = app.global_shortcut().on_shortcut(
-                    "Ctrl+Alt+Q",
-                    move |_app, _sc, _event| {
-                        let h = handle.clone();
-                        let text_result = crate::selection::get_selected_text();
-                        // 读取配置的默认 pin 状态
-                        let default_pin = cfg_s
-                            .read()
-                            .map(|c| c.general.default_pin)
-                            .unwrap_or(false);
-                        if let Some(w) = h.get_webview_window(TRANSLATE_WIN) {
-                            let _ = w.set_size(LogicalSize::new(TRANSLATE_WIDTH, TRANSLATE_HEIGHT));
-                            let _ = w.show();
-                            let _ = w.set_focus();
-                            pinned_s.store(default_pin, Ordering::Relaxed);
-                            let _ = h.emit("pin-changed", default_pin);
-                            match text_result {
-                                Ok(text) if !text.is_empty() => {
-                                    eprintln!(
-                                        "[transight] selected: {}",
-                                        &text.chars().take(50).collect::<String>()
-                                    );
-                                    let _ = h.emit("selected-text", text);
-                                }
-                                Ok(_) => eprintln!("[transight] selection empty"),
-                                Err(e) => eprintln!("[transight] selection failed: {e}"),
-                            }
-                        }
-                    },
-                );
-            }
-
-            {
-                let handle = app.handle().clone();
-                let _ = app.global_shortcut().on_shortcut(
-                    "Escape",
-                    move |_app, _sc, _event| {
-                        if let Some(w) = handle.get_webview_window(TRANSLATE_WIN) {
-                            let _ = w.hide();
-                        }
-                    },
-                );
-            }
+            reregister_shortcuts(app.handle());
 
             Ok(())
         })

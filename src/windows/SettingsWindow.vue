@@ -23,6 +23,19 @@ const shortcutTranslate = ref("Ctrl+Alt+Q");
 const shortcutClose = ref("Escape");
 const recording = ref<string | null>(null);
 
+// 平台检测：macOS Cmd 键在浏览器中触发 e.metaKey，但 global-hotkey 解析器只认 Cmd/Command/Super
+const isMac = typeof navigator !== "undefined" && /Mac|iPhone|iPad|iPod/.test(navigator.platform);
+const metaModifierName = isMac ? "Cmd" : "Super";
+
+/** 显示用：将快捷键中的修饰符名替换为平台符号 */
+function formatShortcutDisplay(shortcut: string): string {
+  if (isMac) {
+    return shortcut.replace(/\bCmd\b/gi, "⌘"); // ⌘
+  }
+  // Linux/Windows: Super → ◆
+  return shortcut.replace(/\bSuper\b/gi, "◆"); // ◆
+}
+
 onMounted(async () => {
   try {
     const { getConfig } = await import("../utils/tauri");
@@ -84,7 +97,8 @@ function onRecordKeydown(e: KeyboardEvent) {
   if (e.ctrlKey) parts.push("Ctrl");
   if (e.altKey) parts.push("Alt");
   if (e.shiftKey) parts.push("Shift");
-  if (e.metaKey) parts.push("Meta");
+  // metaKey → "Cmd" on macOS, "Super" on Linux/Windows（global-hotkey 不识别 "Meta"）
+  if (e.metaKey) parts.push(metaModifierName);
   const isMod = e.key === "Control" || e.key === "Alt" || e.key === "Shift" || e.key === "Meta";
   if (!isMod && e.key.length > 0) {
     parts.push(e.key.length === 1 ? e.key.toUpperCase() : e.key);
@@ -304,7 +318,7 @@ onUnmounted(() => {
               <kbd
                 :class="{ recording: recording === 'translate' }"
                 @click.stop="startRecord('translate')"
-              >{{ recording === 'translate' ? '按下组合键...' : shortcutTranslate }}</kbd>
+              >{{ recording === 'translate' ? '按下组合键...' : formatShortcutDisplay(shortcutTranslate) }}</kbd>
             </div>
             <div class="setting-item">
               <div class="setting-info">
@@ -314,7 +328,7 @@ onUnmounted(() => {
               <kbd
                 :class="{ recording: recording === 'close' }"
                 @click.stop="startRecord('close')"
-              >{{ recording === 'close' ? '按下组合键...' : shortcutClose }}</kbd>
+              >{{ recording === 'close' ? '按下组合键...' : formatShortcutDisplay(shortcutClose) }}</kbd>
             </div>
           </div>
         </div>
