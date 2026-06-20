@@ -266,13 +266,33 @@ pub fn run() {
 
             let pinned_focus = pinned.clone();
             let handle = app.handle().clone();
+            // Windows 上点击 frameless 窗口会触发虚假的 Focused(false)，
+            // 用防抖机制延迟 150ms 隐藏，期间收到 Focused(true) 则取消。
+            let hide_pending = Arc::new(AtomicBool::new(false));
             translate.on_window_event(move |event| {
-                if let tauri::WindowEvent::Focused(false) = event {
-                    if !pinned_focus.load(Ordering::Relaxed) {
-                        if let Some(w) = handle.get_webview_window(TRANSLATE_WIN) {
-                            let _ = w.hide();
+                match event {
+                    tauri::WindowEvent::Focused(false) => {
+                        if !pinned_focus.load(Ordering::Relaxed) {
+                            hide_pending.store(true, Ordering::Relaxed);
+                            let hide_pending = hide_pending.clone();
+                            let handle = handle.clone();
+                            let pinned = pinned_focus.clone();
+                            std::thread::spawn(move || {
+                                std::thread::sleep(std::time::Duration::from_millis(150));
+                                if hide_pending.load(Ordering::Relaxed)
+                                    && !pinned.load(Ordering::Relaxed)
+                                {
+                                    if let Some(w) = handle.get_webview_window(TRANSLATE_WIN) {
+                                        let _ = w.hide();
+                                    }
+                                }
+                            });
                         }
                     }
+                    tauri::WindowEvent::Focused(true) => {
+                        hide_pending.store(false, Ordering::Relaxed);
+                    }
+                    _ => {}
                 }
             });
 
