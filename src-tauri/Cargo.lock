@@ -4633,7 +4633,7 @@ dependencies = [
 
 [[package]]
 name = "transight"
-version = "0.1.3"
+version = "0.1.4"
 dependencies = [
  "accessibility-ng",
  "accessibility-sys-ng",
