@@ -180,7 +180,7 @@ onUnmounted(() => {
     <!-- 标题栏 -->
     <div class="title-bar" @mousedown="onTitleMouseDown">
       <div class="title-left">
-        <div class="title-icon" />
+        <img class="title-icon" src="/icon.png" alt="" />
         <span class="title-text">Transight 设置</span>
       </div>
       <button class="close-btn" @mousedown.stop @click="closeSettingsWindow">
@@ -382,7 +382,6 @@ onUnmounted(() => {
 .title-icon {
   width: 20px; height: 20px;
   border-radius: 5px;
-  background: #3b82f6;
 }
 
 .title-text {

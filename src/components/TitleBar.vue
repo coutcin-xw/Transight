@@ -25,7 +25,7 @@ function onTitleMouseDown() {
 <template>
   <div class="title-bar" @mousedown="onTitleMouseDown">
     <div class="title-left">
-      <div class="title-icon" />
+      <img class="title-icon" src="/icon.png" alt="" />
       <span class="title-text">{{ title }}</span>
     </div>
     <div class="title-controls" @mousedown.stop>
@@ -95,7 +95,6 @@ function onTitleMouseDown() {
   width: 20px;
   height: 20px;
   border-radius: 5px;
-  background: var(--color-accent);
   flex-shrink: 0;
 }
 
